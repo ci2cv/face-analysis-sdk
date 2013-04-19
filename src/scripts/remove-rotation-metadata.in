@@ -1,0 +1,19 @@
+#!@BASH@
+
+function print_usage() {
+    echo "Usage: <input-movie> <output-movie>"
+}
+
+if test $# -ne 2  ; then
+    print_usage
+    exit 0
+fi
+
+for i in $@ ; do
+    if test "$i" = "--help" ; then
+	print_usage
+	exit 0
+    fi
+done
+
+@FFMPEG@ -y -i $1 -metadata:s:v:0 rotate="0" -vcodec copy -acodec copy $2

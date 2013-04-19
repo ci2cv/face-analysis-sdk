@@ -1,0 +1,20 @@
+Welcome to the CSIRO Face Analysis SDK. Documentation for the SDK can
+be found in doc/documentation.html.
+
+All code in this SDK is provided according to the license found in
+LICENSE.
+
+If you use the CSIRO Face Analysis SDK in any publications, we ask
+that you reference our works.
+
+The face tracking component is based on the publication: 
+J. Saragih, S. Lucey and J. Cohn, "Deformable Model Fitting by
+Regularized Landmark Mean-Shift", IJCV 2011.
+
+The expression transfer component is based on the publication:
+J. Saragih, S. Lucey and J. Cohn, "Real-time Avatar Animation from a
+Single Image", AFGR Workshop 2011.
+
+If you use the SDK, we ask that you reference the following paper:
+M. Cox, J. Nuevo, J. Saragih and S. Lucey, "CSIRO Face Analysis SDK",
+AFGR 2013.

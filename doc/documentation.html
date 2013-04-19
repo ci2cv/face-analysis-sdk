@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>CSIRO Face Analysis SDK</title>
+<meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
+<meta name="title" content="CSIRO Face Analysis SDK"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2013-04-16T15:45+1000"/>
+<meta name="author" content="Mark Cox, Jesus Nuevo-Chiquero, Jason Saragih and Simon Lucey"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">CSIRO Face Analysis SDK</h1>
+
+<p>This document introduces the face analysis software development kit
+developed by the Commonwealth Scientific and Industrial Research
+Organisation. This software contains a number of useful automatic
+methods that extract and utilise the geometry of the face found in
+video or still images.
+</p>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 Introduction</a></li>
+<li><a href="#sec-2">2 Components</a>
+<ul>
+<li><a href="#sec-2-1">2.1 Non-rigid Face Registration</a></li>
+<li><a href="#sec-2-2">2.2 Expression Transfer</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 Building and Installation</a></li>
+<li><a href="#sec-4">4 Programs</a>
+<ul>
+<li><a href="#sec-4-1">4.1 Non-Rigid Face Registration</a></li>
+<li><a href="#sec-4-2">4.2 Expression Transfer</a></li>
+<li><a href="#sec-4-3">4.3 Demonstration Program</a></li>
+</ul>
+</li>
+<li><a href="#sec-5">5 Application Programming Interface</a>
+<ul>
+<li><a href="#sec-5-1">5.1 Non-Rigid Face Registration</a></li>
+<li><a href="#sec-5-2">5.2 Expression Transfer</a></li>
+<li><a href="#sec-5-3">5.3 Points</a></li>
+<li><a href="#sec-5-4">5.4 Including and Linking</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6 File Formats</a>
+<ul>
+<li><a href="#sec-6-1">6.1 Points</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">7 Utilities</a>
+<ul>
+<li><a href="#sec-7-1">7.1 Mapping lists</a></li>
+<li><a href="#sec-7-2">7.2 Pathnames</a></li>
+<li><a href="#sec-7-3">7.3 Video</a></li>
+</ul>
+</li>
+<li><a href="#sec-8">8 OpenCV Build Options</a></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>The CSIRO Face Analysis SDK contains a number of useful components
+that can extract and utilise the geometry of the face found in
+video. The SDK includes a <a href="#sec-2-1">real time non-rigid face tracker</a> and an <a href="#sec-2-2">expression transfer</a> module that can animate an avatar using the
+expression of a user.
+</p>
+<p>
+The software development kit (SDK) consists of a collection of <a href="#sec-4">command line programs</a> that cater for the common use cases and an <a href="#sec-5">application programming interface (API)</a> to accommodate third party applications.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Components</h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Non-rigid Face Registration</h3>
+<div class="outline-text-3" id="text-2-1">
+
+<p>The current implementation fits a deformable 3D model to pixels using
+an improved version of the <a href="http://dx.doi.org/10.1007/s11263-010-0380-4">Deformable Model Fitting by Regularized Landmark Mean-Shift</a> algorithm. This algorithm returns 66 2D image
+landmarks, their corresponding position in 3D as well as the pose of
+the head for each successful detection. The implementation also
+includes a failure detection component in order to improve robustness.
+</p></div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Expression Transfer</h3>
+<div class="outline-text-3" id="text-2-2">
+
+<p>The expression transfer component is capable of transferring the shape
+and appearance of an individual to an avatar. The <a href="http://dx.doi.org/10.1109/FG.2011.5771383">algorithm</a> performs
+this transfer using a semantic mapping in order to preserve the
+geometric identity of the avatar. This strategy resulted in more
+visually appealing animations when compared with animations produced
+using a direct geometric transfer i.e. the avatar's shape is identical
+to that of the user.
+</p>
+<p>
+The only information required to initialise the semantic mapping is a
+sample of the user displaying a netural expression. This sample can be
+easily obtained at run-time using the non-rigid face tracker
+component.
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Building and Installation</h2>
+<div class="outline-text-2" id="text-3">
+
+<p>The SDK requires the following software to be installed in order to
+build and execute:
+</p><ul>
+<li><a href="http://opencv.willowgarage.com/wiki/">OpenCV</a> version 2.4 or above (See <a href="#sec-8">OpenCV build options</a> for recommended settings).
+</li>
+<li><a href="http://www.cmake.org">CMake</a> version 2.8 or above.
+</li>
+<li><a href="http://www.ffmpeg.org">FFMPEG</a> version 1.0.0 or above.
+</li>
+<li>Bash
+</li>
+<li><a href="http://qt-project.org">Qt</a> version 4.7 or above (only required if building the GUI)
+</li>
+</ul>
+
+
+<p>
+Building the software requires some familiarity with the Unix command
+line. Instructions for <a href="http://microsoft.com">Microsoft</a> platforms will be provided in a
+future release of the SDK.
+</p>
+<p>
+The first step to building the SDK is to download the source code from
+the <a href="http://ci2cv.net">CI2CV website</a>. The source code is provided as an archive and can
+be extracted using the following command
+</p>
+
+
+<pre class="src src-sh">tar zxvf csiro-face-analysis-sdk.tar.gz
+</pre>
+
+
+<p>
+The build process for the SDK requires knowing the paths to certain
+libraries, programs and header files. Discovering this information is
+performed by CMake using the following commands.
+</p>
+
+
+<pre class="src src-sh"><span style="color: #728a05;">cd</span> csiro-face-analysis-sdk
+mkdir build
+<span style="color: #728a05;">cd</span> build
+cmake [options] ..
+</pre>
+
+
+<p>
+The SDK includes a demonstration program of the face tracker and
+expression transfer components. This program is not built by default
+as it is not a critical component of the SDK and it avoids having to
+install the Qt GUI framework. If you wish to build this component, you
+must specify the option <code>-DWITH_GUI</code> when invoking <code>cmake</code> above.
+</p>
+<p>
+The default values used by the SDK should be sufficient for most
+systems, however, if you experience difficulties then there are a
+number of <code>[options]</code> to <code>cmake</code> that aid the configuration
+process. Valid <code>[options]</code> are
+</p><dl>
+<dt><code>-DOpenCV_PREFIX=/opencv/prefix</code></dt><dd>Installation prefix for OpenCV.
+</dd>
+<dt><code>-DFFMPEG=/path/to/ffmpeg</code></dt><dd>The path to the ffmpeg executable.
+</dd>
+<dt><code>-DBASH=/path/to/bash</code></dt><dd>The path to bash. (Important on systems
+     where <code>/bin/sh</code> is not BASH. e.g. FreeBSD)
+</dd>
+</dl>
+
+
+<p>
+When CMake has successfully configured the project, issue <code>make</code>.
+</p>
+
+
+<pre class="src src-sh">make
+</pre>
+
+
+<p>
+Once the build is completed, all command line programs are stored in
+the <code>build/bin/</code> directory and all shared libraries are stored in the
+<code>build/lib/</code> directory. The command line programs are executable from
+within the build directory. There is no need to perform <code>make install</code>! 
+</p>
+<p>
+The directory in which the executables are built can be added to your
+search path with the following command (BASH only)
+</p>
+
+
+<pre class="src src-sh"><span style="color: #728a05;">export</span> <span style="color: #2075c7;">PATH</span>=$<span style="color: #2075c7;">PATH</span>:/prefix/csiro-face-analysis-sdk/build/bin/
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Programs</h2>
+<div class="outline-text-2" id="text-4">
+
+
+</div>
+
+<div id="outline-container-4-1" class="outline-3">
+<h3 id="sec-4-1"><span class="section-number-3">4.1</span> Non-Rigid Face Registration</h3>
+<div class="outline-text-3" id="text-4-1">
+
+<p>This section outlines the non-rigid face registration program
+<code>face-fit</code>. This program can perform fitting on a single image, a
+sequence of images or video.
+</p>
+<p>
+An important detail of the fitting algorithm is that it relies on a
+frontal face detector to initialize the non-rigid fitting
+component. Once initialized, it falls back to the frontal face
+detector only when the fitting algorithm has failed to accurately
+perform non-rigid registration.
+</p>
+<p>
+The following command executes the fitting algorithm on a single image
+and visualises the results.
+</p>
+
+
+<pre class="src src-sh">face-fit &lt;image&gt;
+</pre>
+
+
+<p>
+The resulting landmarks can be saved to file by specifying an output
+pathname as a command line argument.
+</p>
+
+
+<pre class="src src-sh">face-fit &lt;image&gt; &lt;output-landmarks&gt;
+</pre>
+
+
+<p>
+The next command performs tracking over a sequence of images.
+</p>
+
+
+<pre class="src src-sh">face-fit --lists &lt;image-lists&gt; [landmarks-list]
+</pre>
+
+<p>
+The argument <code>&lt;image-lists&gt;</code> is a file containing a list of image
+pathnames with each pathname separated by a new line. The argument
+<code>[landmarks-list]</code> is a list of pathnames to save the landmarks to. If
+<code>landmarks-list</code> is not specified, then the fitting results are
+displayed on the screen. Users should be aware that only successful
+registrations are saved to file.
+</p>
+<p>
+The <code>--video</code> switch enables <code>face-fit</code> to perform fitting on a video.
+</p>
+
+
+<pre class="src src-sh">face-fit --video &lt;video&gt; [landmarks-template-string]
+</pre>
+
+<p>
+The argument <code>&lt;video&gt;</code> is the pathname to the video. If
+<code>[landmarks-template-string]</code> is not specified, then the tracking is
+displayed to the screen. If <code>[landmarks-template-string]</code> is
+specified, then it is used as the template (or format) argument to
+<a href="http://www.unix.com/man-page/POSIX/3posix/snprintf/"><code>sprintf(3)</code></a> in order to synthesise a landmark pathname based on the
+frame number.
+</p>
+<p>
+For example, the following command will write a landmarks file at
+<code>frames/frame000001.pts</code> for frame one of <code>video</code>,
+<code>frames/frame000002.pts</code> for frame 2, and so on for each frame in
+<code>video</code>. 
+</p>
+
+
+<pre class="src src-sh">face-fit --video video frames/frame%06.pts
+</pre>
+
+<p>
+Like the other modes, landmarks are only written if tracking was
+successful.
+</p>
+<p>
+More functionality of the <code>face-fit</code> algorithm can be obtained from
+its usage text.
+</p>
+
+
+<pre class="src src-sh">$ face-fit --help
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-4-2" class="outline-3">
+<h3 id="sec-4-2"><span class="section-number-3">4.2</span> Expression Transfer</h3>
+<div class="outline-text-3" id="text-4-2">
+
+<p>This section illustrates the <code>expression-transfer</code> program which is a
+front end to the SDK's expression transfer API.
+</p>
+<p>
+The command line arguments accepted by the <code>expression-transfer</code>
+program are
+</p>
+
+
+<pre class="src src-sh">expression-transfer [options] <span style="color: #259185;">\</span>
+                    &lt;calibration-image&gt; &lt;calibration-landmarks&gt; <span style="color: #259185;">\</span>
+                    &lt;image-argument&gt; &lt;landmarks-argument&gt; &lt;output-argument&gt;
+</pre>
+
+<p>
+The arguments <code>&lt;calibration-image&gt;</code> and <code>&lt;calibration-landmarks&gt;</code>
+represent the data needed to calibrate the semantic mapping between
+the individual and the chosen avatar. The calibration data must an
+exemplar of the individual displaying a neutral expression.
+</p>
+<p>
+The arguments <code>&lt;image-argument&gt;</code> and <code>&lt;landmarks-argument&gt;</code> represent
+the expression to be transferred to the avatar and the argument
+<code>&lt;output-argument&gt;</code> specifies where to save the rendered avatar. How
+this information is interpreted changes depending on the mode of the
+<code>expression-transfer</code> program. 
+</p>
+<p>
+The default mode is to synthesize a single image of an avatar and save
+it to file. 
+</p>
+
+
+<pre class="src src-sh">expression-transfer calibration.png calibration.pts <span style="color: #259185;">\</span>
+                    input.png input.pts output.png
+</pre>
+
+
+<p>
+If you specify the switch <code>--lists</code>, the arguments <code>&lt;image-argument&gt;</code>,
+<code>&lt;landmarks-argument&gt;</code> and <code>&lt;output-argument&gt;</code> now correspond to lists
+of pathnames.
+</p>
+<p>
+The avatar used in the above examples is the default avatar delivered
+with the SDK. Other avatars can be selected using the options
+<code>--index</code> and <code>--model</code>.
+</p>
+
+
+<pre class="src src-sh">expression-transfer [--model &lt;model-pathname&gt;] [--index &lt;index&gt;] ...
+</pre>
+
+
+<p>
+Viewing or choosing an avatar for the <code>expression-transfer</code> program
+can be performed using the program <code>display-avatar</code>.
+</p>
+
+
+<pre class="src src-sh">display-avatar [model-pathname]
+</pre>
+
+<p>
+If <code>[model-pathname]</code> is not specified, then the default model
+pathname is used.
+</p>
+<p>
+You can change avatars by pressing the <code>a</code> and <code>d</code> characters
+keyboard. The left and right arrow keys can be used as well. When the
+avatar changes, a number will be printed to the console. This number
+can be used as the argument to the <code>--index</code> option for the
+<code>expression-transfer</code> program.
+</p></div>
+
+</div>
+
+<div id="outline-container-4-3" class="outline-3">
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Demonstration Program</h3>
+<div class="outline-text-3" id="text-4-3">
+
+<p>A GUI application, called <code>demo-application</code> is included with the
+software which demonstrates the tracker and expression transfer
+components simultaneously.
+<img src="demo-application.png"  alt="demo-application.png" />
+</p>
+<p>
+The camera used can be changed using the <code>--camera-index</code> command line
+option
+</p>
+
+
+<pre class="src src-sh">demo-application --camera-index &lt;index&gt;
+</pre>
+
+<p>
+where the argument <code>&lt;index&gt;</code> selects the camera to use. The order of
+the cameras is determined by OpenCV and the first camera has an index
+of <code>0</code>.
+</p>
+<p>
+On OSX, a drag and drop installer for the application can be built by
+issuing the following in the <code>&lt;build&gt;</code> directory.
+</p>
+
+
+<pre class="src src-sh">cpack -G DragNDrop -DWITH_GUI=yes -DCPACK_BUNDLE_NAME=DemoApplication
+</pre>
+
+<p>
+The above command can only be executed after the SDK has been <a href="#sec-3">built</a>.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Application Programming Interface</h2>
+<div class="outline-text-2" id="text-5">
+
+<p>This section outlines how to integrate the CSIRO SDK in to third party
+applications.
+</p>
+</div>
+
+<div id="outline-container-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> Non-Rigid Face Registration</h3>
+<div class="outline-text-3" id="text-5-1">
+
+<p>The non-rigid registration algorithm can be used in third party C++
+applications by including the <code>FACETRACKER</code> namespace.
+</p>
+
+
+<pre class="src src-c++"><span style="color: #bd3612;">#include</span> <span style="color: #259185;">&lt;tracker/FaceTracker.hpp&gt;</span>
+</pre>
+
+
+<p>
+The tracking interface is provided by the abstract base class
+<code>FaceTracker</code>. Instantiating a new instance of this class is performed
+by the <code>LoadFaceTracker</code> function
+</p>
+
+
+<pre class="src src-c++">FaceTracker *LoadFaceTracker();
+</pre>
+
+<p>
+This function returns <code>NULL</code> if the face tracker cannot be loaded.
+</p>
+<p>
+Alongside the <code>FaceTracker</code> instance are its parameters. Face tracker
+parameters are represented by the opaque data type <code>FaceTrackerParams</code>
+of which a new instance can be obtained with the function
+<code>LoadFaceTrackerParams</code>.
+</p>
+
+
+<pre class="src src-c++">FaceTrackerParams *LoadFaceTrackerParams();
+</pre>
+
+<p>
+This function returns <code>NULL</code> if the tracker parameters cannot be loaded.
+</p>
+<p>
+The methods implemented by the <code>FaceTracker</code> class are as follows
+</p>
+
+
+<pre class="src src-c++"><span style="color: #728a05;">typedef</span> <span style="color: #259185;">std</span>::<span style="color: #a57705;">vector</span>&lt;<span style="color: #259185;">cv</span>::<span style="color: #a57705;">Point_</span>&lt;<span style="color: #a57705;">double</span>&gt; &gt; <span style="color: #a57705;">PointVector</span>;
+
+<span style="color: #728a05;">class</span> <span style="color: #a57705;">FaceTracker</span>
+{
+<span style="color: #728a05;">public</span>:
+  <span style="color: #728a05;">virtual</span> <span style="color: #a57705;">int</span> <span style="color: #2075c7;">NewFrame</span>(<span style="color: #728a05;">const</span> <span style="color: #259185;">cv</span>::<span style="color: #a57705;">Mat_</span>&lt;<span style="color: #a57705;">uint8_t</span>&gt; &amp;<span style="color: #2075c7;">image</span>, <span style="color: #a57705;">FaceTrackerParams</span> *<span style="color: #2075c7;">params</span>) = 0;
+  <span style="color: #728a05;">virtual</span> <span style="color: #a57705;">PointVector</span> <span style="color: #2075c7;">getShape</span>() <span style="color: #728a05;">const</span> = 0;
+  <span style="color: #728a05;">virtual</span> <span style="color: #a57705;">void</span> <span style="color: #2075c7;">Reset</span>() = 0;
+};
+</pre>
+
+
+<p>
+The method <code>NewFrame</code> performs tracking on a grayscale <code>image</code> using
+the tracking parameters <code>params</code>. Its return value is an integer value
+between <code>0</code> and <code>10</code> (inclusive) or one of the constants
+</p><dl>
+<dt><code>FaceTracker::TRACKER_FAILED</code></dt><dd>The tracker has failed to
+     accurately perform registration.
+</dd>
+<dt><code>FaceTracker::TRACKER_FACE_OUT_OF_FRAME</code></dt><dd>The tracker has failed
+     as the face is partially outside the image frame.
+</dd>
+</dl>
+
+
+<p>
+A value between <code>0</code> and <code>10</code> represents the health of the tracker. A
+value of <code>10</code> indicates that the quality of the tracking is very good,
+and a value of <code>0</code> indicates that the tracking quality is poor.
+</p>
+<p>
+When the tracking quality is poor or the tracker has failed, an
+application must reset the tracker using the <code>Reset</code> method.
+</p></div>
+
+</div>
+
+<div id="outline-container-5-2" class="outline-3">
+<h3 id="sec-5-2"><span class="section-number-3">5.2</span> Expression Transfer</h3>
+<div class="outline-text-3" id="text-5-2">
+
+<p>The expression transfer algorithm can be used in C++ applications by
+including the <code>AVATAR</code> namespace.
+</p>
+
+
+<pre class="src src-c++"><span style="color: #bd3612;">#include</span> <span style="color: #259185;">"avatar/Avatar.hpp"</span>
+</pre>
+
+
+<p>
+The interface used to perform expression transfer is provided by the
+class <code>Avatar</code>.
+</p>
+
+
+<pre class="src src-c++"><span style="color: #728a05;">typedef</span> <span style="color: #259185;">cv</span>::<span style="color: #a57705;">Mat_</span>&lt;<span style="color: #259185;">cv</span>::<span style="color: #a57705;">Vec</span>&lt;<span style="color: #a57705;">uint8_t</span>,3&gt; &gt; <span style="color: #a57705;">BGRImage</span>;
+<span style="color: #728a05;">typedef</span> <span style="color: #259185;">std</span>::<span style="color: #a57705;">vector</span>&lt;<span style="color: #259185;">cv</span>::<span style="color: #a57705;">Point_</span>&lt;<span style="color: #a57705;">double</span>&gt; &gt; <span style="color: #a57705;">PointVector</span>;
+
+<span style="color: #728a05;">class</span> <span style="color: #a57705;">Avatar</span>
+{
+<span style="color: #728a05;">public</span>:
+  <span style="color: #81908f; font-style: italic;">// </span><span style="color: #81908f; font-style: italic;">Expression Transfer</span>
+  <span style="color: #728a05;">virtual</span> <span style="color: #a57705;">void</span> <span style="color: #2075c7;">Initialise</span>(<span style="color: #728a05;">const</span> <span style="color: #a57705;">BGRImage</span> &amp;<span style="color: #2075c7;">im</span>, <span style="color: #728a05;">const</span> <span style="color: #a57705;">PointVector</span> &amp;<span style="color: #2075c7;">shape</span>, <span style="color: #a57705;">void</span>* <span style="color: #2075c7;">params</span>=<span style="color: #259185;">NULL</span>)=0;
+  <span style="color: #728a05;">virtual</span> <span style="color: #a57705;">int</span> <span style="color: #2075c7;">Animate</span>(<span style="color: #a57705;">BGRImage</span> &amp;<span style="color: #2075c7;">draw</span>, <span style="color: #728a05;">const</span> <span style="color: #a57705;">BGRImage</span> &amp;<span style="color: #2075c7;">image</span>, <span style="color: #728a05;">const</span> <span style="color: #a57705;">PointVector</span> &amp;<span style="color: #2075c7;">shape</span>, <span style="color: #a57705;">void</span>* <span style="color: #2075c7;">params</span>=<span style="color: #259185;">NULL</span>)=0;
+
+  <span style="color: #81908f; font-style: italic;">// </span><span style="color: #81908f; font-style: italic;">Selecting the avatar.</span>
+  <span style="color: #728a05;">virtual</span> <span style="color: #a57705;">int</span> <span style="color: #2075c7;">numberOfAvatars</span>() = 0;
+  <span style="color: #728a05;">virtual</span> <span style="color: #a57705;">void</span> <span style="color: #2075c7;">setAvatar</span>(<span style="color: #a57705;">int</span> <span style="color: #2075c7;">index</span>) = 0;
+};
+</pre>
+
+
+<p>
+An instance of the <code>Avatar</code> class can be created with the function
+<code>LoadAvatar()</code>.
+</p>
+
+
+<pre class="src src-c++">Avatar *LoadAvatar();
+Avatar *LoadAvatar(<span style="color: #728a05;">const</span> <span style="color: #a57705;">char</span> *<span style="color: #2075c7;">avatar_collection_pathname</span>);
+</pre>
+
+
+<p>
+The method <code>Animate</code> renders an avatar displaying the expression found
+in <code>image</code> with the corresponding <code>shape</code>. The resulting rendering is
+stored in the matrix <code>draw</code>.
+</p>
+<p>
+Prior to calling <code>Animate</code>, an avatar must have been chosen using
+<code>setAvatar</code>. With the avatar chosen, the <code>Avatar</code> instance must be
+initialised using <code>Initialise</code>. Initialisation requires an image and
+shape corresponding to the netural expression of the individual that
+is being used to animate the avatar. This procedure must be followed
+every time the avatar is changed.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-5-3" class="outline-3">
+<h3 id="sec-5-3"><span class="section-number-3">5.3</span> Points</h3>
+<div class="outline-text-3" id="text-5-3">
+
+<p>The <code>utils/points.hpp</code> header contains two functions for reading and
+writing point files.
+</p>
+
+
+<pre class="src src-c++"><span style="color: #728a05;">typedef</span> <span style="color: #728a05;">const</span> <span style="color: #259185;">std</span>::<span style="color: #a57705;">vector</span>&lt;<span style="color: #259185;">cv</span>::<span style="color: #a57705;">Point_</span>&lt;<span style="color: #a57705;">double</span>&gt; &gt; <span style="color: #a57705;">PointVector</span>;
+
+<span style="color: #a57705;">PointVector</span> <span style="color: #2075c7;">load_points</span>(<span style="color: #728a05;">const</span> <span style="color: #a57705;">char</span> *<span style="color: #2075c7;">pathname</span>);
+<span style="color: #a57705;">void</span> <span style="color: #2075c7;">save_points</span>(<span style="color: #728a05;">const</span> <span style="color: #a57705;">char</span> *<span style="color: #2075c7;">pathname</span>, <span style="color: #728a05;">const</span> <span style="color: #a57705;">PointVector</span> &amp;<span style="color: #2075c7;">points</span>);
+</pre>
+
+
+<p>
+A <code>std::runtime_exception</code> is thrown if either function is unable to
+perform its task.
+</p></div>
+
+</div>
+
+<div id="outline-container-5-4" class="outline-3">
+<h3 id="sec-5-4"><span class="section-number-3">5.4</span> Including and Linking</h3>
+<div class="outline-text-3" id="text-5-4">
+
+<p>The compiler options required to use the code outlined in this section
+are the following
+</p><ul>
+<li><code>&lt;source&gt;/src</code> added to the include path.
+</li>
+<li><code>&lt;build&gt;/src</code> added to the include path.
+</li>
+<li>Linking against the libraries <code>utilities</code>, <code>clmTracker</code> and
+  <code>avatarAnim</code> in the <code>&lt;build&gt;/lib</code> directory.
+</li>
+<li>Compiler and linker requirements for the OpenCV modules <code>core</code>,
+  <code>highgui</code>, <code>imgproc</code> and <code>objdetect</code>.
+</li>
+</ul>
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> File Formats</h2>
+<div class="outline-text-2" id="text-6">
+
+
+</div>
+
+<div id="outline-container-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> Points</h3>
+<div class="outline-text-3" id="text-6-1">
+
+<p>The programs used in this library make extensive use of point files or
+landmark files. These files commonly have the extension <code>.pts</code>. The
+format of this file is intended to be very simple.
+</p>
+<p>
+This is an example of a points file:
+</p>
+
+
+<pre class="example">n_points: 2
+{
+1 2
+5.5 2.2
+}
+</pre>
+
+<p>
+The first line of a points file contains the number of points <code>N</code> in
+the file. The region between the braces <code>{</code> and <code>}</code> contains the <code>N</code>
+points with each point starting on a new line. The text for the point
+is simply two floating point numbers.
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Utilities</h2>
+<div class="outline-text-2" id="text-7">
+
+<p>This section outlines a number of utility programs which are bundled
+with the software.
+</p>
+</div>
+
+<div id="outline-container-7-1" class="outline-3">
+<h3 id="sec-7-1"><span class="section-number-3">7.1</span> Mapping lists</h3>
+<div class="outline-text-3" id="text-7-1">
+
+<p>The command line programs in this SDK follow this basic argument
+structure
+</p>
+
+
+<pre class="src src-sh"><span style="color: #728a05;">command</span> [options] &lt;configuration-1&gt; .. &lt;configuration-K&gt; <span style="color: #259185;">\</span>
+                  &lt;input-pathname-1&gt; .. &lt;input-pathname-M&gt; <span style="color: #259185;">\</span>
+                  [output-pathname-1] .. [output-pathname-N]
+</pre>
+
+<p>
+The reason for this is that this structure makes it very convenient to
+operate with lists of data when coupled with the <code>map-list</code> program.
+</p>
+<p>
+Lets assume that the file <code>a.list</code> contains a list of numbers
+</p>
+
+
+<pre class="example">1
+2
+3
+4
+</pre>
+
+<p>
+and the file <code>b.list</code> contains a list of strings
+</p>
+
+
+<pre class="example">do
+not
+pass
+go
+</pre>
+
+<p>
+then the command <code>map-list 2 a.list b.list echo</code> will produce the
+following output
+</p>
+
+
+<pre class="example">1 do
+2 not
+3 pass
+4 go
+</pre>
+
+
+<p>
+The usage string for <code>map-list</code> is
+</p>
+
+
+<pre class="example">map-list [options] &lt;N&gt; &lt;list-1&gt; .. &lt;list-N&gt; &lt;command&gt; [command arguments ... ]
+</pre>
+
+<p>
+The argument <code>&lt;N&gt;</code> specifies how many lists are specified on the
+command line. The <code>&lt;N&gt;</code> lists must immediately follow. The argument
+<code>&lt;command&gt;</code> represents the command to be executed, and <code>[command arguments]</code> will appear on the command line before the items obtained
+from the lists.
+</p>
+<p>
+Another example using the above data is
+</p>
+
+
+<pre class="example">$ map-list 2 a.list b.list printf 'file-%02d-%s.txt\n'
+file-01-do.txt
+file-02-not.txt
+file-03-pass.txt
+file-04-go.txt
+</pre>
+
+
+<p>
+If one of the list arguments is the text <code>-</code>, then the list is read
+from the standard input rather than being read from file. It is safe
+to use <code>-</code> multiple times. This indicates that the list read from
+standard input is used more than once.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-7-2" class="outline-3">
+<h3 id="sec-7-2"><span class="section-number-3">7.2</span> Pathnames</h3>
+<div class="outline-text-3" id="text-7-2">
+
+<p>Complementing the <code>map-list</code> program is <code>change-pathnames</code>. Its
+purpose is to take a list of pathnames and create a new list with the
+pathnames changed to have either a different directory, extension or
+both.
+</p>
+<p>
+For example, the file <code>input.list</code> contains the following list of pathnames
+</p>
+
+
+<pre class="example">frame-01.png
+frame-02.png
+frame-03.png
+frame-04.png
+</pre>
+
+
+<p>
+Executing the following <code>change-pathnames</code> command on <code>input.list</code>
+</p>
+
+
+<pre class="example">change-pathnames input.list output.list --directory points/ --type pts
+</pre>
+
+<p>
+produces the file <code>output.list</code>
+</p>
+
+
+<pre class="example">points/frame-01.pts
+points/frame-02.pts
+points/frame-03.pts
+points/frame-04.pts
+</pre>
+
+
+<p>
+If the input list for <code>change-pathnames</code> is the character <code>-</code>, then
+the list of pathnames is read from the standard input. If the output
+list is the character <code>-</code>, then the transformed list is written to
+standard output.
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-7-3" class="outline-3">
+<h3 id="sec-7-3"><span class="section-number-3">7.3</span> Video</h3>
+<div class="outline-text-3" id="text-7-3">
+
+<p>A number of utilities are included in the SDK that perform common
+operations on video. These utilities are
+</p><ul>
+<li><code>remove-rotation-metadata</code> 
+</li>
+<li><code>rotate-movie</code>
+</li>
+<li><code>extract-frames-from-movie</code>
+</li>
+<li><code>create-movie-from-frames</code>
+</li>
+</ul>
+
+
+<p>
+The program <code>remove-rotation-metadata</code> is required to overcome an
+issue with OpenCV where its <a href="http://docs.opencv.org/modules/highgui/doc/reading_and_writing_images_and_video.html#videocapture">cv::VideoCapture</a> class does not honour the
+rotation parameter embedded in some video containers. This problem
+typically occurs when working with video obtained using a portable
+device. The program <code>remove-rotation-metadata</code> creates a new movie
+without the rotation parameter. 
+</p>
+<p>
+It may be required to rotate the video once the rotation metadata is
+removed. This task can be performed using the command <code>rotate-movie</code>.
+</p>
+<p>
+The program <code>extract-frames-from-movie</code> converts a movie to a sequence
+of images and <code>create-movie-from-frames</code> uses a sequence of images to
+create a movie.
+</p>
+<p>
+All of the above programs simply invoke <code>FFMPEG</code> with the required
+options and arguments.
+</p></div>
+</div>
+
+</div>
+
+<div id="outline-container-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> OpenCV Build Options</h2>
+<div class="outline-text-2" id="text-8">
+
+<p>It is strongly recommended that the following options are used when
+building OpenCV
+</p>
+
+
+<pre class="src src-sh">cmake -DCMAKE_BUILD_TYPE=Release <span style="color: #259185;">\</span>
+      -DENABLE_AVX=ON <span style="color: #259185;">\</span>
+      -DENABLE_FAST_MATH=ON <span style="color: #259185;">\</span>
+      -DENABLE_SSE=ON <span style="color: #259185;">\</span>
+      -DENABLE_SSE2=ON <span style="color: #259185;">\</span>
+      -DENABLE_SSE3=ON <span style="color: #259185;">\</span>
+      -DENABLE_SSE41=ON <span style="color: #259185;">\</span>
+      -DENABLE_SSE42=ON <span style="color: #259185;">\</span>
+      -DENABLE_SSSE3=ON <span style="color: #259185;">\</span>
+      /path/to/opencv/
+</pre>
+
+<p>
+Please ensure that your CPU supports the specified instructions before
+enabling them otherwise the compiler will produce binaries that cannot
+be executed.
+</p></div>
+</div>
+</div>
+
+<div id="postamble">
+<p class="date">Date: 2013-04-16T15:45+1000</p>
+<p class="author">Author: Mark Cox, Jesus Nuevo-Chiquero, Jason Saragih and Simon Lucey</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.4 with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
+<a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
+
+</div>
+</body>
+</html>

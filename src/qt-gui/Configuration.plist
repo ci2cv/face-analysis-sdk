@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BackgroundColour</key>
+	<string>0</string>
+	<key>CameraIndex</key>
+	<integer>0</integer>
+	<key>TrackerParametersFile</key>
+	<string>face.mytrackerparams.binary</string>
+	<key>TrackerFile</key>
+	<string>face.mytracker.binary</string>
+	<key>TrackerConnectionsFile</key>
+	<string>face.con</string>
+	<key>AvatarFile</key>
+	<string>CI2CV.avatar.binary</string>
+	<key>RefreshRate</key>
+	<integer>35</integer>
+	<key>TrackingQualityThreshold</key>
+	<real>0.65</real>
+	<key>TrackingHealthUpdateMSecs</key>
+	<integer>250</integer>
+	<key>FramesUntilResetWhenFaceIsOutsideTheFrame</key>
+	<integer>50</integer>
+</dict>
+</plist>

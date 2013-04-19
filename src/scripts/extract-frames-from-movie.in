@@ -1,0 +1,35 @@
+#!@BASH@
+
+function print_usage() {
+	 cat<<EOF
+Usage: <input-movie> <output-format-string> [ffmpeg movie input options ... ]
+
+All ffmpeg options must occur after the input movie andoutput format
+string arguments.
+
+Examples:
+  `basename $0` input.mov frames/%06.png
+
+Experience suggests that extracting frames as PNG images produces
+better quality images with the default settings.
+EOF
+
+}
+
+if test $# -lt 2  ; then
+    print_usage
+    exit 0
+fi
+
+for i in $@ ; do
+    if test "$i" = "--help" ; then
+	print_usage
+	exit 0
+    fi
+done
+
+input_movie=$1
+output_format_string=$2
+shift 2
+
+@FFMPEG@ -y $@ -i "$input_movie" -f image2 "$output_format_string"

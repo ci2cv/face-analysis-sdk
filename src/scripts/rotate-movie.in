@@ -1,0 +1,27 @@
+#!@BASH@
+
+function print_usage() {
+    echo "Usage: <input-movie> <output-movie> [ffmpeg options]."
+    echo 
+    echo "All ffmpeg options must occur after the input movie and output movie arguments."
+}
+
+if test $# -lt 2  ; then
+    print_usage
+    exit 0
+fi
+
+for i in $@ ; do
+    if test "$i" = "--help" ; then
+	print_usage
+	exit 0
+    fi
+done
+
+input_movie=$1
+output_movie=$2
+shift 2
+
+# transpose=1 clockwise
+# transpose=2 counter-clockwise
+@FFMPEG@ -y -i $input_movie $@ -vf transpose=1 $output_movie

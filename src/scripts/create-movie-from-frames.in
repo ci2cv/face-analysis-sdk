@@ -1,0 +1,28 @@
+#!@BASH@
+
+function print_usage() {
+    echo "Usage: <input-format-string> <output-movie> [ffmpeg movie input options]."
+    echo 
+    echo "All ffmpeg options must occur after the input movie and output format string arguments."
+    echo ""
+    echo "Suggested FFMPEG options: "
+    echo "  For quicktime use -f mov -vcodec mpeg4 -b 10M"
+}
+
+if test $# -lt 2  ; then
+    print_usage
+    exit 0
+fi
+
+for i in $@ ; do
+    if test "$i" = "--help" ; then
+	print_usage
+	exit 0
+    fi
+done
+
+input_format_string=$1
+output_movie=$2
+shift 2
+
+@FFMPEG@ -y -f image2 -i $input_format_string $@ "$output_movie"
