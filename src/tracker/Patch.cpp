@@ -15,6 +15,8 @@
 // (GPL2) which can be found in the LICENSE file located in the top
 // most directory of the source code.
 
+// Copyright CSIRO 2013
+
 #include <tracker/Patch.hpp>
 #define SGN(x) ((x<0) ? 0:1)
 using namespace FACETRACKER;

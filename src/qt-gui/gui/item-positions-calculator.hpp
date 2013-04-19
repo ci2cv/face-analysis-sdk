@@ -15,6 +15,8 @@
 // (GPL2) which can be found in the LICENSE file located in the top
 // most directory of the source code.
 
+// Copyright CSIRO 2013
+
 #ifndef _CI2CV_GUI_GUI_ITEM_POSITIONS_CALCULATOR_HPP_
 #define _CI2CV_GUI_GUI_ITEM_POSITIONS_CALCULATOR_HPP_
 

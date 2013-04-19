@@ -15,6 +15,8 @@
 // (GPL2) which can be found in the LICENSE file located in the top
 // most directory of the source code.
 
+// Copyright CSIRO 2013
+
 #include <tracker/myFaceTracker.hpp>
 #define it at<int>
 #define db at<double>

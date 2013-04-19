@@ -15,6 +15,8 @@
 // (GPL2) which can be found in the LICENSE file located in the top
 // most directory of the source code.
 
+// Copyright CSIRO 2013
+
 #ifndef _AVATAR_Avatar_h_
 #define _AVATAR_Avatar_h_
 
