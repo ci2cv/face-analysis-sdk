@@ -117,6 +117,8 @@ namespace AVATAR
     std::vector<cv::Mat> _expr;   /**< shapes for expressions of avatars      */
     std::vector<pupil> _lpupil;   /**< Left pupil                             */
     std::vector<pupil> _rpupil;   /**< Right pupil                            */
+    pupil _base_lpupil;           /**< Base pupil to create new left pupils from.  This crap needs to go.*/
+    pupil _base_rpupil;           /**< Base pupil to create new right pupils from. This crap needs to go to.*/
     cv::Point _lp0;               /**< User's frontal gaze left pupil loc     */
     cv::Point _rp0;               /**< User's frontal gaze right pupil loc    */
     cv::Mat _ocav_idx;            /**< Oral cavity point indices              */

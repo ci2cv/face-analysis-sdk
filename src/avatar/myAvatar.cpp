@@ -100,7 +100,12 @@ void myAvatar::Read(ifstream &s,bool readType)
   if(_lpupil[0].idx.rows > _rpupil[0].idx.rows)
     epts_.create(2*_lpupil[0].idx.rows,1,CV_64F); 
   else epts_.create(2*_rpupil[0].idx.rows,1,CV_64F); 
-  _idx = 0; return;
+  _idx = 0;
+
+  _base_lpupil = _lpupil[0];
+  _base_rpupil = _rpupil[0];
+
+  return;
 }
 //=============================================================================
 void myAvatar::ReadBinary(ifstream &s,bool readType)
@@ -171,7 +176,12 @@ void myAvatar::ReadBinary(ifstream &s,bool readType)
   if(_lpupil[0].idx.rows > _rpupil[0].idx.rows)
     epts_.create(2*_lpupil[0].idx.rows,1,CV_64F); 
   else epts_.create(2*_rpupil[0].idx.rows,1,CV_64F); 
-  _idx = 0; return;
+  _idx = 0;
+
+  _base_lpupil = _lpupil[0];
+  _base_rpupil = _rpupil[0];
+
+  return;
 }
 //=============================================================================
 void myAvatar::Write(ofstream &s, bool binary)
@@ -694,6 +704,8 @@ myAvatar::GetPupil(cv::Mat &im,
 cv::Rect 
 myAvatar::GetBoundingBox(cv::Mat &pt)
 {
+  assert(pt.cols == 1);
+  assert(pt.rows > 0);
   int n = pt.rows/2;
   double xmin=pt.db(0,0),xmax=pt.db(0,0),ymin=pt.db(n,0),ymax=pt.db(n,0);
   for(int i = 1; i < n; i++){
@@ -954,8 +966,10 @@ void myAvatar::AddAvatar(cv::Mat &image, cv::Mat &points, cv::Mat &eyes)
     
     pupil llpupil,rrpupil;
     llpupil.rad = vv;                rrpupil.rad = vv;
-    llpupil.idx = _lpupil[0].idx.clone(); rrpupil.idx = _rpupil[0].idx.clone();
-    llpupil.tri = _lpupil[0].tri.clone(); rrpupil.tri = _rpupil[0].tri.clone();
+    llpupil.idx = _base_lpupil.idx.clone();
+    rrpupil.idx = _base_rpupil.idx.clone();
+    llpupil.tri = _base_lpupil.tri.clone();
+    rrpupil.tri = _base_rpupil.tri.clone();
     llpupil.scelera = lscelera;      rrpupil.scelera = rscelera;
     llpupil.image.resize(3); cv::split(lpupil,llpupil.image);
     rrpupil.image.resize(3); cv::split(rpupil,rrpupil.image);
@@ -1032,8 +1046,10 @@ void myAvatar::AddAvatar(cv::Mat &image, cv::Mat &points, cv::Mat &eyes)
   }else{ //undefined pupils
     pupil llpupil,rrpupil;
     llpupil.rad = 1;                      rrpupil.rad = 1;
-    llpupil.idx = _lpupil[0].idx.clone(); rrpupil.idx = _rpupil[0].idx.clone();
-    llpupil.tri = _lpupil[0].tri.clone(); rrpupil.tri = _rpupil[0].tri.clone();
+    llpupil.idx = _base_lpupil.idx.clone();
+    rrpupil.idx = _base_rpupil.idx.clone();
+    llpupil.tri = _base_lpupil.tri.clone();
+    rrpupil.tri = _base_rpupil.tri.clone();
     llpupil.scelera = cv::Scalar(150,150,150);     
     rrpupil.scelera = cv::Scalar(150,150,150);
     cv::Mat limg = cv::Mat::zeros(101,101,CV_8UC3);
@@ -1265,7 +1281,6 @@ myAvatarParams::Load(const char* fname, bool binary)
     type = AVATAR::IO::MYAVATARPARAMS;
     s.close();
   }
-
 return;
 }
 //==============================================================================
