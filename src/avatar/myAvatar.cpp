@@ -995,7 +995,7 @@ void myAvatar::AddAvatar(cv::Mat &image, cv::Mat &points, cv::Mat &eyes)
     _rpupil[_idx].px = rrect.x + rrect.width/2 ;
     _rpupil[_idx].py = rrect.y + rrect.height/2;
     vector<cv::Mat> rgb_clone(3);
-    while(1){
+    while(0){
       for(int j = 0; j < 3; j++)rgb_clone[j] = rgb[j].clone();
       this->DrawPupil(_lpupil[_idx].px,_lpupil[_idx].py,
 		      _lpupil[_idx].rad,shape,_lpupil[_idx].image,
