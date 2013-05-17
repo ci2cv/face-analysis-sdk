@@ -76,6 +76,7 @@ ADD_SUBDIRECTORY(src/change-pathnames)
 ADD_SUBDIRECTORY(src/expression-transfer)
 ADD_SUBDIRECTORY(src/display-avatar)
 ADD_SUBDIRECTORY(src/display-tracking)
+ADD_SUBDIRECTORY(src/create-avatar-model)
 
 IF(WITH_GUI)
   SET(CPACK_PACKAGE_NAME "clm")
