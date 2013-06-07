@@ -199,14 +199,30 @@ return;
 //=============================================================================
 void CLM::Read(ifstream &s,bool readType)
 {
-  if(readType){int type; s >> type; assert(type == IO::CLM);}
-  int n; s >> n; _pdm.Read(s); _cent.resize(n);_visi.resize(n);
-  _patch.resize(n); IO::ReadMat(s,_refs);
-  for(size_t i = 0; i < _cent.size(); i++)IO::ReadMat(s,_cent[i]);
-  for(size_t i = 0; i < _visi.size(); i++)IO::ReadMat(s,_visi[i]);
-  for(size_t i = 0; i < _patch.size(); i++){
+  if (readType) {
+    int type;
+    s >> type;
+    assert(type == IO::CLM);
+  }
+
+  int n;
+  s >> n;
+
+  _pdm.Read(s);
+  _cent.resize(n);
+  _visi.resize(n);
+  _patch.resize(n);
+  IO::ReadMat(s,_refs);
+  for (size_t i = 0; i < _cent.size(); i++)
+    IO::ReadMat(s,_cent[i]);
+
+  for (size_t i = 0; i < _visi.size(); i++)
+    IO::ReadMat(s,_visi[i]);
+
+  for (size_t i = 0; i < _patch.size(); i++) {
     _patch[i].resize(_pdm.nPoints());
-    for(int j = 0; j < _pdm.nPoints(); j++)_patch[i][j].Read(s);
+    for (int j = 0; j < _pdm.nPoints(); j++)
+      _patch[i][j].Read(s);
   }
   _plocal.create(_pdm.nModes(),1,CV_64F);
   _pglobl.create(6,1,CV_64F);
@@ -218,50 +234,60 @@ void CLM::Read(ifstream &s,bool readType)
   g_.create(6+_pdm.nModes(),1,CV_64F);
   J_.create(2*_pdm.nPoints(),6+_pdm.nModes(),CV_64F);
   H_.create(6+_pdm.nModes(),6+_pdm.nModes(),CV_64F);
-  prob_.resize(_pdm.nPoints()); pmem_.resize(_pdm.nPoints()); 
-  wmem_.resize(_pdm.nPoints()); return;
+  prob_.resize(_pdm.nPoints());
+  pmem_.resize(_pdm.nPoints()); 
+  wmem_.resize(_pdm.nPoints());
+  return;
 }
 //=============================================================================
 void CLM::ReadBinary(ifstream &s,bool readType)
 {
-	if(readType){int type;
-		s.read(reinterpret_cast<char*>(&type), sizeof(type));
-		assert(type == IOBinary::CLM);
-	}
-	int n;
-	
+  if (readType) {
+    int type;
+    s.read(reinterpret_cast<char*>(&type), sizeof(type));
+    assert(type == IOBinary::CLM);
+  }
+  int n;
+  
   _kWidth = 36.;
-	s.read(reinterpret_cast<char*>(&n), sizeof(n));
-	_pdm.ReadBinary(s);
-	_cent.resize(n);_visi.resize(n);
-	_patch.resize(n);
+  s.read(reinterpret_cast<char*>(&n), sizeof(n));
+  _pdm.ReadBinary(s);
+  _cent.resize(n);
+  _visi.resize(n);
+  _patch.resize(n);
   _detectorsNCC.resize(n);
-	IOBinary::ReadMat(s,_refs);
-	for(size_t i = 0; i < _cent.size(); i++)
-		IOBinary::ReadMat(s,_cent[i]);
-	for(size_t i = 0; i < _visi.size(); i++)
-		IOBinary::ReadMat(s,_visi[i]);
-	for(int i = 0; i < n; i++){
-		_patch[i].resize(_pdm.nPoints());
-		for(int j = 0; j < _pdm.nPoints(); j++){
-			_patch[i][j].ReadBinary(s);
-		}
-		_detectorsNCC.at(i)._patch = _patch[i]; //.setPatchExperts(_patch[i]);
-		_detectorsNCC.at(i).setReferenceShape(_refs);
-	}
+  IOBinary::ReadMat(s,_refs);
 
-	_plocal.create(_pdm.nModes(),1,CV_64F);
-	_pglobl.create(6,1,CV_64F);
-	cshape_.create(2*_pdm.nPoints(),1,CV_64F);
-	bshape_.create(2*_pdm.nPoints(),1,CV_64F);
-	oshape_.create(2*_pdm.nPoints(),1,CV_64F);
-	ms_.create(2*_pdm.nPoints(),1,CV_64F);
-	u_.create(6+_pdm.nModes(),1,CV_64F);
-	g_.create(6+_pdm.nModes(),1,CV_64F);
-	J_.create(2*_pdm.nPoints(),6+_pdm.nModes(),CV_64F);
-	H_.create(6+_pdm.nModes(),6+_pdm.nModes(),CV_64F);
-	prob_.resize(_pdm.nPoints()); pmem_.resize(_pdm.nPoints());
-	wmem_.resize(_pdm.nPoints()); return;
+  for(size_t i = 0; i < _cent.size(); i++)
+    IOBinary::ReadMat(s,_cent[i]);
+
+  for(size_t i = 0; i < _visi.size(); i++)
+    IOBinary::ReadMat(s,_visi[i]);
+
+  for(int i = 0; i < n; i++){
+    _patch[i].resize(_pdm.nPoints());
+
+    for(int j = 0; j < _pdm.nPoints(); j++){
+      _patch[i][j].ReadBinary(s);
+    }
+    _detectorsNCC.at(i)._patch = _patch[i]; //.setPatchExperts(_patch[i]);
+    _detectorsNCC.at(i).setReferenceShape(_refs);
+  }
+  
+  _plocal.create(_pdm.nModes(),1,CV_64F);
+  _pglobl.create(6,1,CV_64F);
+  cshape_.create(2*_pdm.nPoints(),1,CV_64F);
+  bshape_.create(2*_pdm.nPoints(),1,CV_64F);
+  oshape_.create(2*_pdm.nPoints(),1,CV_64F);
+  ms_.create(2*_pdm.nPoints(),1,CV_64F);
+  u_.create(6+_pdm.nModes(),1,CV_64F);
+  g_.create(6+_pdm.nModes(),1,CV_64F);
+  J_.create(2*_pdm.nPoints(),6+_pdm.nModes(),CV_64F);
+  H_.create(6+_pdm.nModes(),6+_pdm.nModes(),CV_64F);
+  prob_.resize(_pdm.nPoints());
+  pmem_.resize(_pdm.nPoints());
+  wmem_.resize(_pdm.nPoints());
+  return;
 }
 //=============================================================================
 int CLM::GetViewIdx()
