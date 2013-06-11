@@ -207,11 +207,13 @@ void CLM::Read(ifstream &s,bool readType)
 
   int n;
   s >> n;
-
+  
+  _kWidth = 36.;
   _pdm.Read(s);
   _cent.resize(n);
   _visi.resize(n);
   _patch.resize(n);
+  _detectorsNCC.resize(n);
   IO::ReadMat(s,_refs);
   for (size_t i = 0; i < _cent.size(); i++)
     IO::ReadMat(s,_cent[i]);
@@ -221,8 +223,12 @@ void CLM::Read(ifstream &s,bool readType)
 
   for (size_t i = 0; i < _patch.size(); i++) {
     _patch[i].resize(_pdm.nPoints());
+    
     for (int j = 0; j < _pdm.nPoints(); j++)
       _patch[i][j].Read(s);
+
+    _detectorsNCC.at(i)._patch = _patch[i];
+    _detectorsNCC.at(i).setReferenceShape(_refs);
   }
   _plocal.create(_pdm.nModes(),1,CV_64F);
   _pglobl.create(6,1,CV_64F);
