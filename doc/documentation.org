@@ -178,7 +178,7 @@ expression-transfer [options] \
 #+end_src
 The arguments ~<calibration-image>~ and ~<calibration-landmarks>~
 represent the data needed to calibrate the semantic mapping between
-the individual and the chosen avatar. The calibration data must an
+the individual and the chosen avatar. The calibration data must be an
 exemplar of the individual displaying a neutral expression.
 
 The arguments ~<image-argument>~ and ~<landmarks-argument>~ represent
@@ -218,10 +218,41 @@ keyboard. The left and right arrow keys can be used as well. When the
 avatar changes, a number will be printed to the console. This number
 can be used as the argument to the ~--index~ option for the
 ~expression-transfer~ program.
+
+** Creating New Avatars
+The program ~create-avatar-model~ is used to create a new model file
+that can be used by the Face Analysis SDK.
+#+begin_src sh
+create-avatar-model [options] <output-model-pathname> \
+                    <avatar-image> <avatar-annotation> [eyes-annotation]
+#+end_src
+The argument ~<output-model-pathname>~ is the location of the new
+avatar model containing the avatar defined by the arguments
+~<avatar-image>~, ~<avatar-annotation>~ and ~[eyes annotation]~.
+
+The following diagram displays the landmarks that should be stored in
+the ~<avatar-annotation>~ pathname using the [[File Formats/Points][points]] file format.
+
+[[file:avatar-annotation.png]]
+
+The ~[eyes annotation]~ argument provides the ability to draw the eyes
+of the avatar with the same gaze as the user. This pathname should
+contain the following annotations using the [[File Formats/Points][points]] file format.
+
+[[file:avatar-eyes-annotation.png]]
+
+It is safe to not specify the ~[eyes-annotation]~ argument for cases
+where the avatars are wearing glasses.
+
+The ~create-avatar-model~ program provides a ~--list~ switch to allow
+the creation of an model file containing more than one avatar. In
+~--list~ mode, the arguments ~<avatar-image>~, ~<avatar-annotation>~
+and ~[eyes-annotation]~ are files containing lists of pathnames.
 ** Demonstration Program
 A GUI application, called ~demo-application~ is included with the
 software which demonstrates the tracker and expression transfer
 components simultaneously.
+
 [[file:demo-application.png]]
 
 The camera used can be changed using the ~--camera-index~ command line
@@ -360,6 +391,7 @@ are the following
 - Compiler and linker requirements for the OpenCV modules ~core~,
   ~highgui~, ~imgproc~ and ~objdetect~.
 * File Formats
+<<<File Formats/Points>>>
 ** Points
 The programs used in this library make extensive use of point files or
 landmark files. These files commonly have the extension ~.pts~. The

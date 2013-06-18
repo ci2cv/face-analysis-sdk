@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="CSIRO Face Analysis SDK"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2013-04-16T15:45+1000"/>
+<meta name="generated" content="2013-06-18T11:51+1000"/>
 <meta name="author" content="Mark Cox, Jesus Nuevo-Chiquero, Jason Saragih and Simon Lucey"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
@@ -139,7 +139,8 @@ video or still images.
 <ul>
 <li><a href="#sec-4-1">4.1 Non-Rigid Face Registration</a></li>
 <li><a href="#sec-4-2">4.2 Expression Transfer</a></li>
-<li><a href="#sec-4-3">4.3 Demonstration Program</a></li>
+<li><a href="#sec-4-3">4.3 Creating New Avatars</a></li>
+<li><a href="#sec-4-4">4.4 Demonstration Program</a></li>
 </ul>
 </li>
 <li><a href="#sec-5">5 Application Programming Interface</a>
@@ -452,7 +453,7 @@ program are
 <p>
 The arguments <code>&lt;calibration-image&gt;</code> and <code>&lt;calibration-landmarks&gt;</code>
 represent the data needed to calibrate the semantic mapping between
-the individual and the chosen avatar. The calibration data must an
+the individual and the chosen avatar. The calibration data must be an
 exemplar of the individual displaying a neutral expression.
 </p>
 <p>
@@ -508,17 +509,66 @@ keyboard. The left and right arrow keys can be used as well. When the
 avatar changes, a number will be printed to the console. This number
 can be used as the argument to the <code>--index</code> option for the
 <code>expression-transfer</code> program.
-</p></div>
+</p>
+</div>
 
 </div>
 
 <div id="outline-container-4-3" class="outline-3">
-<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Demonstration Program</h3>
+<h3 id="sec-4-3"><span class="section-number-3">4.3</span> Creating New Avatars</h3>
 <div class="outline-text-3" id="text-4-3">
+
+<p>The program <code>create-avatar-model</code> is used to create a new model file
+that can be used by the Face Analysis SDK.
+</p>
+
+
+<pre class="src src-sh">create-avatar-model [options] &lt;output-model-pathname&gt; <span style="color: #259185;">\</span>
+                    &lt;avatar-image&gt; &lt;avatar-annotation&gt; [eyes-annotation]
+</pre>
+
+<p>
+The argument <code>&lt;output-model-pathname&gt;</code> is the location of the new
+avatar model containing the avatar defined by the arguments
+<code>&lt;avatar-image&gt;</code>, <code>&lt;avatar-annotation&gt;</code> and <code>[eyes annotation]</code>.
+</p>
+<p>
+The following diagram displays the landmarks that should be stored in
+the <code>&lt;avatar-annotation&gt;</code> pathname using the <a href="#File-Formats-Points">points</a> file format.
+</p>
+<p>
+<img src="avatar-annotation.png"  alt="avatar-annotation.png" />
+</p>
+<p>
+The <code>[eyes annotation]</code> argument provides the ability to draw the eyes
+of the avatar with the same gaze as the user. This pathname should
+contain the following annotations using the <a href="#File-Formats-Points">points</a> file format.
+</p>
+<p>
+<img src="avatar-eyes-annotation.png"  alt="avatar-eyes-annotation.png" />
+</p>
+<p>
+It is safe to not specify the <code>[eyes-annotation]</code> argument for cases
+where the avatars are wearing glasses.
+</p>
+<p>
+The <code>create-avatar-model</code> program provides a <code>--list</code> switch to allow
+the creation of an model file containing more than one avatar. In
+<code>--list</code> mode, the arguments <code>&lt;avatar-image&gt;</code>, <code>&lt;avatar-annotation&gt;</code>
+and <code>[eyes-annotation]</code> are files containing lists of pathnames.
+</p></div>
+
+</div>
+
+<div id="outline-container-4-4" class="outline-3">
+<h3 id="sec-4-4"><span class="section-number-3">4.4</span> Demonstration Program</h3>
+<div class="outline-text-3" id="text-4-4">
 
 <p>A GUI application, called <code>demo-application</code> is included with the
 software which demonstrates the tracker and expression transfer
 components simultaneously.
+</p>
+<p>
 <img src="demo-application.png"  alt="demo-application.png" />
 </p>
 <p>
@@ -759,7 +809,8 @@ are the following
 <h2 id="sec-6"><span class="section-number-2">6</span> File Formats</h2>
 <div class="outline-text-2" id="text-6">
 
-
+<p><a name="File-Formats-Points" class="target">File Formats/Points</a> 
+</p>
 </div>
 
 <div id="outline-container-6-1" class="outline-3">
@@ -1015,7 +1066,7 @@ be executed.
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2013-04-16T15:45+1000</p>
+<p class="date">Date: 2013-06-18T11:51+1000</p>
 <p class="author">Author: Mark Cox, Jesus Nuevo-Chiquero, Jason Saragih and Simon Lucey</p>
 <p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.4 with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 24</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
