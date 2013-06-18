@@ -34,7 +34,7 @@ print_usage()
     " - The pupil centre of the left eye.\n"
     " - The pupil centre of the right eye.\n"
     " - The pupil edge of the left eye.\n"
-    " - The pupil edge of the rgith eye.\n"
+    " - The pupil edge of the right eye.\n"
     "\n"
     "Some avatars do not require eye annotations. It is ok if eyes-annotation is not specified.\n"
     "In list mode, leave a blank line for the avatars that do not require eye annotations.\n"
