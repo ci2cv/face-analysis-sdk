@@ -8,7 +8,7 @@ All ffmpeg options must occur after the input movie andoutput format
 string arguments.
 
 Examples:
-  `basename $0` input.mov frames/%06.png
+  `basename $0` input.mov frames/%06d.png
 
 Experience suggests that extracting frames as PNG images produces
 better quality images with the default settings.
