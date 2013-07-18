@@ -19,6 +19,7 @@
 
 #include "utils/helpers.hpp"
 #include "utils/command-line-arguments.hpp"
+#include "utils/points.hpp"
 #include "tracker/FaceTracker.hpp"
 #include <opencv2/highgui/highgui.hpp>
 
@@ -42,6 +43,7 @@ print_usage()
     "                            Can range from 0 to 10 where 10 is extremely picky.\n"
     "                            The default is 5.\n"
     "  --title <string>          The window title to use.\n"                  
+    "  --3d                      Save 3D shape instead of the 2D shape.\n"
     "  --verbose                 Display information whilst processing.\n"
     "\n"
     "Default mode:\n"
@@ -78,6 +80,7 @@ struct Configuration
   int tracking_threshold;
   std::string window_title;
   bool verbose;
+  bool save_3d_points;
 
   int circle_radius;
   int circle_thickness;
@@ -121,7 +124,8 @@ run_program(int argc, char **argv)
   cfg.circle_radius = 2;
   cfg.circle_thickness = 1;
   cfg.circle_linetype = 8;
-  cfg.circle_shift = 0;
+  cfg.circle_shift = 0;  
+  cfg.save_3d_points = false;
 
   for (int i = 1; i < argc; i++) {
     std::string argument(argv[i]);
@@ -146,6 +150,8 @@ run_program(int argc, char **argv)
       cfg.tracking_threshold = get_argument<int>(&i, argc, argv);
     } else if (argument == "--verbose") {
       cfg.verbose = true;
+    } else if (argument == "--3d") {
+      cfg.save_3d_points = true;
     } else if (!assign_argument(argument, image_argument, landmarks_argument)) {
       throw make_runtime_error("Unable to process argument '%s'", argument.c_str());
     }
@@ -225,8 +231,10 @@ run_lists_mode(const Configuration &cfg,
     int result = tracker->NewFrame(gray_image, tracker_params);
 
     std::vector<cv::Point_<double> > shape;
+    std::vector<cv::Point3_<double> > shape3D;
     if (result >= cfg.tracking_threshold) {
       shape = tracker->getShape();
+      shape3D = tracker->get3DShape();
     } else {
       tracker->Reset();
     }
@@ -234,7 +242,11 @@ run_lists_mode(const Configuration &cfg,
     if (!have_argument_p(landmarks_argument)) {
       display_image_and_points(cfg, image, shape);    
     } else if (shape.size() > 0) {
-      IO::SavePts(landmarks_it->c_str(), shape);
+      if (cfg.save_3d_points)	
+	save_points3(landmarks_it->c_str(), shape3D);
+      else
+	save_points(landmarks_it->c_str(), shape);
+
       if (cfg.verbose)
 	display_image_and_points(cfg, image, shape);
     } else if (cfg.verbose) {
@@ -291,8 +303,10 @@ run_video_mode(const Configuration &cfg,
     int result = tracker->Track(gray_image, tracker_params);
 
     std::vector<cv::Point_<double> > shape;
+    std::vector<cv::Point3_<double> > shape3D;
     if (result >= cfg.tracking_threshold) {
       shape = tracker->getShape();
+      shape3D = tracker->get3DShape();
     } else {
       tracker->Reset();
     }
@@ -301,7 +315,12 @@ run_video_mode(const Configuration &cfg,
       display_image_and_points(cfg, image, shape);
     } else if (shape.size() > 0) {
       snprintf(pathname_buffer.data(), pathname_buffer.size(), landmarks_argument->c_str(), frame_number);
-      IO::SavePts(pathname_buffer.data(), shape);
+
+      if (cfg.save_3d_points)	
+	save_points3(pathname_buffer.data(), shape3D);
+      else
+	save_points(pathname_buffer.data(), shape);
+
       if (cfg.verbose)
 	display_image_and_points(cfg, image, shape);
     } else if (cfg.verbose) {
@@ -332,14 +351,20 @@ run_image_mode(const Configuration &cfg,
   int result = tracker->NewFrame(gray_image, tracker_params);
 
   std::vector<cv::Point_<double> > shape;
+  std::vector<cv::Point3_<double> > shape3;
   
-  if (result >= cfg.tracking_threshold)
+  if (result >= cfg.tracking_threshold) {
     shape = tracker->getShape();
+    shape3 = tracker->get3DShape();
+  }
 
   if (!have_argument_p(landmarks_argument)) {
     display_image_and_points(cfg, image, shape);    
   } else if (shape.size() > 0) {
-    IO::SavePts(landmarks_argument->c_str(), shape);
+    if (cfg.save_3d_points)
+      save_points3(landmarks_argument->c_str(), shape3);
+    else
+      save_points(landmarks_argument->c_str(), shape);
   }
  
   delete tracker;
