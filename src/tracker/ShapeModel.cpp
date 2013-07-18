@@ -676,14 +676,24 @@ void PDM3D::CalcReferenceUpdate(cv::Mat &dp,cv::Mat &plocal,cv::Mat &pglobl)
 void PDM3D::ApplySimT(double a,double b,double tx,double ty,cv::Mat &pglobl)
 {
   assert((pglobl.rows == 6) && (pglobl.cols == 1) && (pglobl.type()==CV_64F));
-  double angle = atan2(b,a),scale = a/cos(angle);
-  double ca = cos(angle),sa = sin(angle);
-  double xc = pglobl.db(4,0),yc = pglobl.db(5,0);
-  R1_ = cv::Scalar(0); R1_.db(2,2) = 1.0;
-  R1_.db(0,0) =  ca; R1_.db(0,1) = -sa; R1_.db(1,0) =  sa; R1_.db(1,1) =  ca;
-  Euler2Rot(R2_,pglobl); R3_ = R1_*R2_; 
-  pglobl.db(0,0) *= scale; Rot2Euler(R3_,pglobl);
-  pglobl.db(4,0) = a*xc - b*yc + tx; pglobl.db(5,0) = b*xc + a*yc + ty;
+  double angle = atan2(b,a);
+  double scale = a/cos(angle);
+  double ca = cos(angle);
+  double sa = sin(angle);
+  double xc = pglobl.db(4,0);
+  double yc = pglobl.db(5,0);
+  R1_ = cv::Scalar(0);
+  R1_.db(2,2) = 1.0;
+  R1_.db(0,0) =  ca;
+  R1_.db(0,1) = -sa;
+  R1_.db(1,0) =  sa;
+  R1_.db(1,1) =  ca;
+  Euler2Rot(R2_,pglobl);
+  R3_ = R1_*R2_; 
+  pglobl.db(0,0) *= scale;
+  Rot2Euler(R3_,pglobl);
+  pglobl.db(4,0) = a*xc - b*yc + tx;
+  pglobl.db(5,0) = b*xc + a*yc + ty;
   return;
 }
 //===========================================================================
