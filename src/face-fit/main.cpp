@@ -100,9 +100,10 @@ int run_image_mode(const Configuration &cfg,
 		   const CommandLineArgument<std::string> &image_argument,
 		   const CommandLineArgument<std::string> &landmarks_argument);
 
-void display_image_and_points(const Configuration &cfg,
-			      const cv::Mat &image,
-			      const std::vector<cv::Point_<double> > &points);
+void display_data(const Configuration &cfg,
+		  const cv::Mat &image,
+		  const std::vector<cv::Point_<double> > &points,
+		  const Pose &pose);
 
 int
 run_program(int argc, char **argv)
@@ -232,15 +233,17 @@ run_lists_mode(const Configuration &cfg,
 
     std::vector<cv::Point_<double> > shape;
     std::vector<cv::Point3_<double> > shape3D;
+    Pose pose;
     if (result >= cfg.tracking_threshold) {
       shape = tracker->getShape();
       shape3D = tracker->get3DShape();
+      pose = tracker->getPose();
     } else {
       tracker->Reset();
     }
 
     if (!have_argument_p(landmarks_argument)) {
-      display_image_and_points(cfg, image, shape);    
+      display_data(cfg, image, shape, pose);
     } else if (shape.size() > 0) {
       if (cfg.save_3d_points)	
 	save_points3(landmarks_it->c_str(), shape3D);
@@ -248,9 +251,9 @@ run_lists_mode(const Configuration &cfg,
 	save_points(landmarks_it->c_str(), shape);
 
       if (cfg.verbose)
-	display_image_and_points(cfg, image, shape);
+	display_data(cfg, image, shape, pose);
     } else if (cfg.verbose) {
-      display_image_and_points(cfg, image, shape);
+      display_data(cfg, image, shape, pose);
     }
 
     if (have_argument_p(landmarks_argument))
@@ -304,15 +307,18 @@ run_video_mode(const Configuration &cfg,
 
     std::vector<cv::Point_<double> > shape;
     std::vector<cv::Point3_<double> > shape3D;
+    Pose pose;
+
     if (result >= cfg.tracking_threshold) {
       shape = tracker->getShape();
       shape3D = tracker->get3DShape();
+      pose = tracker->getPose();
     } else {
       tracker->Reset();
     }
 
     if (!have_argument_p(landmarks_argument)) {
-      display_image_and_points(cfg, image, shape);
+      display_data(cfg, image, shape, pose);
     } else if (shape.size() > 0) {
       snprintf(pathname_buffer.data(), pathname_buffer.size(), landmarks_argument->c_str(), frame_number);
 
@@ -322,9 +328,9 @@ run_video_mode(const Configuration &cfg,
 	save_points(pathname_buffer.data(), shape);
 
       if (cfg.verbose)
-	display_image_and_points(cfg, image, shape);
+	display_data(cfg, image, shape, pose);
     } else if (cfg.verbose) {
-      display_image_and_points(cfg, image, shape);
+      display_data(cfg, image, shape, pose);
     }
 
     input >> image;
@@ -352,14 +358,16 @@ run_image_mode(const Configuration &cfg,
 
   std::vector<cv::Point_<double> > shape;
   std::vector<cv::Point3_<double> > shape3;
+  Pose pose;
   
   if (result >= cfg.tracking_threshold) {
     shape = tracker->getShape();
     shape3 = tracker->get3DShape();
+    pose = tracker->getPose();
   }
 
   if (!have_argument_p(landmarks_argument)) {
-    display_image_and_points(cfg, image, shape);    
+    display_data(cfg, image, shape, pose); 
   } else if (shape.size() > 0) {
     if (cfg.save_3d_points)
       save_points3(landmarks_argument->c_str(), shape3);
@@ -373,10 +381,34 @@ run_image_mode(const Configuration &cfg,
   return 0;
 }
 
+cv::Mat
+compute_pose_image(const Pose &pose, int height, int width)
+{
+  cv::Mat_<cv::Vec<uint8_t,3> > rv = cv::Mat_<cv::Vec<uint8_t,3> >::zeros(height,width);
+  cv::Mat_<double> axes = pose_axes(pose);
+  cv::Mat_<double> scaling = cv::Mat_<double>::eye(3,3);
+
+  for (int i = 0; i < axes.cols; i++) {
+    axes(0,i) = 0.5*double(width)*(axes(0,i) + 1);
+    axes(1,i) = -0.5*double(height)*(axes(1,i) - 1);
+  }
+  
+  cv::Point centre(width/2, height/2);
+  // pitch
+  cv::line(rv, centre, cv::Point(axes(0,0), axes(1,0)), cv::Scalar(255,0,0));
+  // yaw
+  cv::line(rv, centre, cv::Point(axes(0,1), axes(1,1)), cv::Scalar(0,255,0));
+  // roll
+  cv::line(rv, centre, cv::Point(axes(0,2), axes(1,2)), cv::Scalar(0,0,255));
+
+  return rv;
+}
+
 void
-display_image_and_points(const Configuration &cfg,
-			 const cv::Mat &image,
-			 const std::vector<cv::Point_<double> > &points)
+display_data(const Configuration &cfg,
+	     const cv::Mat &image,
+	     const std::vector<cv::Point_<double> > &points,
+	     const Pose &pose)
 {
 
   cv::Scalar colour;
@@ -387,10 +419,28 @@ display_image_and_points(const Configuration &cfg,
   else
     colour = cv::Scalar(255);
 
-  cv::Mat displayed_image(image.clone());
+  cv::Mat displayed_image;
+  if (image.type() == cv::DataType<cv::Vec<uint8_t,3> >::type)
+    displayed_image = image.clone();
+  else if (image.type() == cv::DataType<uint8_t>::type)
+    cv::cvtColor(image, displayed_image, CV_GRAY2BGR);
+  else 
+    throw make_runtime_error("Unsupported camera image type for display_data function.");
 
   for (size_t i = 0; i < points.size(); i++) {
     cv::circle(displayed_image, points[i], cfg.circle_radius, colour, cfg.circle_thickness, cfg.circle_linetype, cfg.circle_shift);
+  }
+
+  int pose_image_height = 100;
+  int pose_image_width = 100;
+  cv::Mat pose_image = compute_pose_image(pose, pose_image_height, pose_image_width);
+  for (int i = 0; i < pose_image_height; i++) {
+    for (int j = 0; j < pose_image_width; j++) {
+      displayed_image.at<cv::Vec<uint8_t,3> >(displayed_image.rows - pose_image_height + i,
+					      displayed_image.cols - pose_image_width + j)
+			 
+			 = pose_image.at<cv::Vec<uint8_t,3> >(i,j);
+    }
   }
 
   cv::imshow(cfg.window_title, displayed_image);
