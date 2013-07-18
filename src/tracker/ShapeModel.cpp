@@ -697,3 +697,9 @@ void PDM3D::ApplySimT(double a,double b,double tx,double ty,cv::Mat &pglobl)
   return;
 }
 //===========================================================================
+const cv::Mat 
+PDM3D::currentShape3D() const
+{
+  return S_;
+}
+//===========================================================================

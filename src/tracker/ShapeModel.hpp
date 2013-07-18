@@ -147,7 +147,7 @@ namespace FACETRACKER
     void CalcReferenceUpdate(cv::Mat &dp,cv::Mat &plocal,cv::Mat &pglobl);
     void ApplySimT(double a,double b,double tx,double ty,cv::Mat &pglobl);
     void Project2D(cv::Mat &s,cv::Mat &S,cv::Mat &pglobl);
-    const cv::Mat currentShape3D(){return S_;}
+    const cv::Mat currentShape3D() const; 
   private:
     cv::Mat S_,R_,s_,P_,Px_,Py_,Pz_,R1_,R2_,R3_;
   };
