@@ -389,7 +389,7 @@ compute_pose_image(const Pose &pose, int height, int width)
   cv::Mat_<double> scaling = cv::Mat_<double>::eye(3,3);
 
   for (int i = 0; i < axes.cols; i++) {
-    axes(0,i) = 0.5*double(width)*(axes(0,i) + 1);
+    axes(0,i) = -0.5*double(width)*(axes(0,i) - 1);
     axes(1,i) = -0.5*double(height)*(axes(1,i) - 1);
   }
   
