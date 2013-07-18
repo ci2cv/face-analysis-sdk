@@ -50,6 +50,7 @@ namespace FACETRACKER
 
     std::vector<cv::Point_<double> > getShape() const;
     std::vector<cv::Point3_<double> > get3DShape() const;
+    Pose getPose() const;
     
     int                          //-1 on failure, 0 otherwise
     NewFrame(cv::Mat &im,        //grayscale image to track

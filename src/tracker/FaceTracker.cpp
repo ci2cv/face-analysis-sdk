@@ -106,3 +106,25 @@ FACETRACKER::LoadFaceTrackerParams()
 {
   return LoadFaceTrackerParams(DefaultFaceTrackerParamsPathname().c_str());
 }
+
+// Compute the vectors for each axis i.e. x-axis, y-axis then
+// z-axis. Alternatively the pitch, yaw, roll
+// 
+cv::Mat_<double>
+FACETRACKER::pose_axes(const Pose &pose)
+{
+  cv::Mat_<double> pitch = cv::Mat_<double>::eye(3,3);
+  cv::Mat_<double> yaw = cv::Mat_<double>::eye(3,3);
+
+  pitch(1,1) = cos(pose.pitch);
+  pitch(1,2) = -sin(pose.pitch);
+  pitch(2,1) = sin(pose.pitch);
+  pitch(2,2) = cos(pose.pitch);
+
+  yaw(0,0) = cos(pose.yaw);
+  yaw(0,2) = -sin(pose.yaw);
+  yaw(2,0) = sin(pose.yaw);
+  yaw(2,2) = cos(pose.yaw);
+
+  return pitch * yaw;
+}

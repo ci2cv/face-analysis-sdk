@@ -67,6 +67,17 @@ namespace FACETRACKER
 
   typedef std::vector<cv::Point_<double> > PointVector;
 
+  struct Pose {
+    double pitch;
+    double yaw;  
+    double roll;    
+  };
+
+  // Compute the vectors for each axis i.e. x-axis, y-axis then
+  // z-axis. Alternatively the pitch, yaw, roll
+  // 
+  cv::Mat_<double> pose_axes(const Pose &pose);
+
   //============================================================================
   /**
      Base class for a face tracker
@@ -114,6 +125,7 @@ namespace FACETRACKER
 
     virtual std::vector<cv::Point_<double> > getShape() const = 0;
     virtual std::vector<cv::Point3_<double> > get3DShape() const = 0;
+    virtual Pose getPose() const = 0;
 
     // TODO Investigate why the params argument is needed at all. Why
     // can't it be const too? 
@@ -138,7 +150,6 @@ namespace FACETRACKER
     //returns _clm._pglobl, the (weak perspective) pose in 3D
     virtual cv::Mat
     getPoseParameters()=0; 
-
   };
   //============================================================================
   /** IO functions */

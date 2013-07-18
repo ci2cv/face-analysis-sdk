@@ -385,7 +385,16 @@ myFaceTracker::get3DShape() const
 
   return rv;
 }
-
+//=============================================================================
+Pose
+myFaceTracker::getPose() const
+{
+  Pose rv;
+  rv.pitch = _clm._pglobl.db(1,0);
+  rv.yaw = _clm._pglobl.db(2,0);
+  rv.roll = _clm._pglobl.db(3,0);
+  return rv;
+}
 //=============================================================================
 int
 myFaceTracker::NewFrame(cv::Mat &im,
