@@ -113,6 +113,7 @@ namespace FACETRACKER
     };
 
     virtual std::vector<cv::Point_<double> > getShape() const = 0;
+    virtual std::vector<cv::Point3_<double> > get3DShape() const = 0;
 
     // TODO Investigate why the params argument is needed at all. Why
     // can't it be const too? 

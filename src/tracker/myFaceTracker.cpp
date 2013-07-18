@@ -364,6 +364,28 @@ myFaceTracker::getShape() const
   
   return rv;
 }
+
+std::vector<cv::Point3_<double> >
+myFaceTracker::get3DShape() const
+{
+  const int n = _shape.rows / 2;
+  std::vector<cv::Point3_<double> > rv(n);
+
+  cv::Mat shape_3d = _clm._pdm.currentShape3D();  
+
+  if ((_shape.rows > 0) && ((_shape.rows % 2) == 0) && (_shape.cols == 1)) {
+    assert((shape_3d.rows % 3) == 0);
+    assert(shape_3d.type() == cv::DataType<double>::type);
+    for (size_t i = 0; i < rv.size(); i++) {
+      rv[i] = cv::Point3_<double>(shape_3d.db(i + 0*n, 0),
+				  shape_3d.db(i + 1*n, 0),
+				  shape_3d.db(i + 2*n, 0));
+    }
+  }
+
+  return rv;
+}
+
 //=============================================================================
 int
 myFaceTracker::NewFrame(cv::Mat &im,
@@ -531,6 +553,9 @@ myFaceTracker::NewFrame(cv::Mat &im,
     //   }
     // }
   }
+
+  // update the 3D shape
+  _clm._pdm.CalcParams(_shape,_clm._plocal,_clm._pglobl);  
 
   if (release) 
     delete p;
