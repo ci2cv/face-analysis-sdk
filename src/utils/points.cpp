@@ -98,3 +98,63 @@ vectorise_points(const std::vector<cv::Point_<double> > &points)
 
   return rv;
 }
+
+// Points 3D
+std::vector<cv::Point3_<double> >
+load_points3(const char *pathname)
+{
+  int i,n;
+  char str[256];
+  char c;
+
+  std::fstream file(pathname, std::ios::in);
+  if (!file.is_open())
+    throw make_runtime_error("Unable to open pts file '%s'", pathname);
+
+  file.exceptions(std::ios::badbit | std::ios::failbit);
+
+  // read the number of points
+  while (!file.eof()) { 
+    file >> str;
+    if (strncmp(str,"n_points:",9) == 0)
+      break;
+  }
+  
+  file >> n;
+
+  std::vector<cv::Point3_<double> > shape(n);
+
+  // find the opening {
+  while (!file.eof()) { 
+    file >> c;
+    if(c == '{')
+      break;
+  }
+  
+  for (i = 0; i < n; i++) 
+    file >> shape[i].x >> shape[i].y >> shape[i].z;
+
+  file.close();
+
+  return shape;
+}
+
+void
+save_points3(const char *pathname, const std::vector<cv::Point3_<double> > &points)
+{ 
+  std::fstream file(pathname, std::ios::out);
+  if (!file.is_open()) 
+    throw make_runtime_error("Unable to open file '%s' for writing!", pathname);
+
+  file.exceptions(std::ios::badbit | std::ios::failbit);
+
+  file << "n_points: " << points.size() << "\n{\n";
+  for (size_t i = 0; i < points.size(); i++) 
+    file << points[i].x << " " << points[i].y << " " << points[i].z << "\n";
+
+  file << "}\n";
+  
+  file.close();
+  
+  return;
+}

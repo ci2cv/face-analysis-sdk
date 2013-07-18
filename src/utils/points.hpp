@@ -28,6 +28,9 @@ typedef std::vector<cv::Point_<double> > PointVector;
 std::vector<cv::Point_<double> > load_points(const char *pathname);
 void save_points(const char *pathname, const std::vector<cv::Point_<double> > &points);
 
+std::vector<cv::Point3_<double> > load_points3(const char *pathname);
+void save_points3(const char *pathname, const std::vector<cv::Point3_<double> > &points);
+
 cv::Mat_<double> vectorise_points(const std::vector<cv::Point_<double> > &points);
 
 #endif
