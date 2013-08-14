@@ -23,6 +23,7 @@
 #include <opencv2/core/core.hpp>
 #include <list>
 #include <stdexcept>
+#include <cstdarg>
 
 /** Evaluates predicate on all items within the range (begin,end)
     until predicate is false, otherwise returns true. */
