@@ -34,6 +34,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <algorithm>
 
 // prototype template function for converting string arguments to non string types.
 template <typename T> T convertOptionArgument(const std::string &argument);
