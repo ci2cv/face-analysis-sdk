@@ -24,6 +24,7 @@
 #include <cerrno>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
 void
 print_usage()
