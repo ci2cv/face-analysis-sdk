@@ -20,9 +20,10 @@
 #include <avatar/Avatar.hpp>
 #include <tracker/FaceTracker.hpp>
 #include <tracker/myFaceTracker.hpp>
-#include <opencv/highgui.h>
+#include <opencv2/highgui.hpp>
 #include <iostream>
 #include <fstream>
+#include <limits>
 
 #include <test/command-line-options.hpp>
 
@@ -177,7 +178,7 @@ int main(int argc, char** argv)
   AVATAR::Avatar* avatar = 
     AVATAR::LoadAvatar(avatar_file.c_str());
   assert((p != NULL) && (tracker != NULL) && (avatar != NULL));
-  cv::Mat im,draw; cvNamedWindow("test"); 
+  cv::Mat im,draw; cv::namedWindow("test");
   cv::VideoCapture camera;
   if (camera_index == -1) {
     if (file_exists_and_is_readable_p(camera_file)) {
@@ -242,7 +243,7 @@ int main(int argc, char** argv)
     input_frame_last_captured = cv::getTickCount();
 
     if(fname){
-      double frac = camera.get(CV_CAP_PROP_POS_AVI_RATIO);
+      double frac = camera.get(cv::CAP_PROP_POS_AVI_RATIO);
       if( ((1.0-frac) < 1.0e-5) || (im.rows == 0) || (im.cols == 0))break;
     }else cv::flip(im,im,1); 
     int64 capture2 = cv::getTickCount(); 
@@ -342,7 +343,7 @@ int main(int argc, char** argv)
       input_frame_last_captured += (end_time - start_time);
     }
 
-    int c = cvWaitKey(1);
+    int c = cv::waitKey(1);
     if(c == 27)break; 
     else if(c == int('d'))tracker->Reset();
     else if(c == int('i')){

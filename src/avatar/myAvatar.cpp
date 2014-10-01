@@ -21,7 +21,8 @@
 #include "utils/helpers.hpp"
 #include <avatar/myAvatar.hpp>
 #include <tracker/CLM.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 #define it at<int>
 #define db at<double>
 using namespace AVATAR;
@@ -1006,8 +1007,8 @@ void myAvatar::AddAvatar(cv::Mat &image, cv::Mat &points, cv::Mat &eyes)
 		      rgb_clone,_rpupil[_idx].scelera,_rpupil[_idx].idx,
 		      _rpupil[_idx].tri);
       cv::Mat im; cv::merge(rgb_clone,im);
-      cvNamedWindow("Eyes"); cv::imshow("Eyes",im); 
-      int c = cvWaitKey(0);
+      cv::namedWindow("Eyes"); cv::imshow("Eyes",im);
+      int c = cv::waitKey(0);
       if(c == 27)break;
       else if(c == int('w'))_lpupil[_idx].py -= 1; //left up
       else if(c == int('d'))_lpupil[_idx].px += 1; //left right

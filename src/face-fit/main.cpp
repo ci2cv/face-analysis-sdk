@@ -21,7 +21,8 @@
 #include "utils/command-line-arguments.hpp"
 #include "utils/points.hpp"
 #include "tracker/FaceTracker.hpp"
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/highgui.hpp>
+#include <iostream>
 
 using namespace FACETRACKER;
 

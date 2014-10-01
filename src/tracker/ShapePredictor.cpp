@@ -19,6 +19,7 @@
 
 #include <tracker/ShapePredictor.hpp>
 #include <tracker/CLM.hpp>
+#include <opencv2/imgproc.hpp>
 #define db at<double>
 #define it at<int>
 using namespace FACETRACKER;
@@ -140,7 +141,7 @@ cv::Mat ShapePredictor::Predict(cv::Mat &shape,cv::Mat &im)
   int n = _idx.rows,k = FindCluster(shape);
   _warp.Crop(im,crop_,shape);
   cv::Mat img = crop_(_rect);
-  equalizeHist(img,img);
+  cv::equalizeHist(img,img);
   cv::Mat x = x_(cv::Rect(0,0,1,_warp._nPix));
   _warp.Vectorize(crop_,x); cv::normalize(x,x); x_.db(_warp._nPix,0) = 1.0;
   y_ = _R[k]*x_; 

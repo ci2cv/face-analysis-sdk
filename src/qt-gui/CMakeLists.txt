@@ -36,8 +36,9 @@ SET(MOC_HEADERS
 QT4_WRAP_CPP(MOC_SRCS ${MOC_HEADERS})
 
 INCLUDE_DIRECTORIES(".")
+IF(APPLE)
 set_source_files_properties(osx-configuration.mm PROPERTIES COMPILE_FLAGS -ObjC++)
-
+ENDIF()
 
 add_executable(demo-application
   main.cpp
@@ -55,24 +56,30 @@ IF(APPLE)
   
   SET(EXTRA_SRC "Configuration.plist")
 
-ENDIF()
 
-
-ADD_EXECUTABLE(${BundleName} MACOSX_BUNDLE 
-  main.cpp 
-  osx-configuration.mm
-  ${guiFILES} 
-  ${MOC_SRCS}
-  ${EXTRA_SRC}
+  ADD_EXECUTABLE(${BundleName} MACOSX_BUNDLE
+	main.cpp
+	osx-configuration.mm
+	${guiFILES}
+	${MOC_SRCS}
+	${EXTRA_SRC}
   )
-TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim ${EXTRA_LIBS})
+  TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim ${EXTRA_LIBS})
+ELSE()
+  ADD_EXECUTABLE(${BundleName}
+	main.cpp
+	${guiFILES}
+	${MOC_SRCS}
+	${EXTRA_SRC}
+  )
+  TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim ${EXTRA_LIBS})
+ENDIF()
 
 
 # IF(APPLE)
 
 #  # set_target_properties(${BundleName} PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/Configuration.plist)
  
-
 # ELSEIF(UNIX)
 
 # ENDIF()
