@@ -20,10 +20,10 @@
 #ifndef _CI2CV_GUI_GUI_AVATAR_SELECTION_HPP_
 #define _CI2CV_GUI_GUI_AVATAR_SELECTION_HPP_
 
-#include <QtCore/QObject>
-#include <QtCore/QRectF>
-#include <QtGui/QGraphicsItemGroup>
-#include <QtCore/QScopedArrayPointer>
+#include <QObject>
+#include <QRectF>
+#include <QGraphicsItemGroup>
+#include <QScopedArrayPointer>
 
 #include "gui/graphics-scrollbar.hpp"
 

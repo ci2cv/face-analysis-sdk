@@ -24,6 +24,8 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <functional>
 #include <iostream>
+#include <cassert>
+#include <limits>
 
 bool
 nan_p(double value)
@@ -329,7 +331,7 @@ load_grayscale_image(const char *pathname, int colour_conversion_method)
 cv::Mat_<uint8_t>
 load_grayscale_image(const char *pathname, cv::Mat *original_image)
 {
-  return load_grayscale_image(pathname, CV_BGR2GRAY, original_image);
+  return load_grayscale_image(pathname, cv::COLOR_BGR2GRAY, original_image);
 }
 
 cv::Mat_<uint8_t>

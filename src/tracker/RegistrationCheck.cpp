@@ -18,6 +18,8 @@
 // Copyright CSIRO 2013
 
 #include <tracker/RegistrationCheck.hpp>
+#include <opencv2/imgproc.hpp>
+
 using namespace FACETRACKER;
 using namespace std;
 //===========================================================================

@@ -18,6 +18,8 @@
 // Copyright CSIRO 2013
 
 #include <tracker/Patch.hpp>
+#include <opencv2/imgproc.hpp>
+
 #define SGN(x) ((x<0) ? 0:1)
 using namespace FACETRACKER;
 using namespace std;

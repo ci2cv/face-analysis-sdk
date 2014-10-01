@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
   bool init = false; 
 #endif
 
-  cv::Mat im,draw; cvNamedWindow("test"); cv::VideoCapture camera;
+  cv::Mat im,draw; cv::namedWindow("test"); cv::VideoCapture camera;
   std::cout << "Usage: "<<argv[0] << " [video] [-o]" << std::endl
 	    << "-o will output an XML file with point locations" << std::endl;
 
@@ -98,8 +98,8 @@ int main(int argc, char *argv[])
 
   if(argc == 1){
     camera.open(0);
-    camera.set(CV_CAP_PROP_FRAME_WIDTH,640);
-    camera.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+    camera.set(cv::CAP_PROP_FRAME_WIDTH,640);
+    camera.set(cv::CAP_PROP_FRAME_HEIGHT,480);
   }
 
   if(argc > 1){
@@ -112,8 +112,8 @@ int main(int argc, char *argv[])
 	outputFile = fname;
 
 	camera.open(0);
-	camera.set(CV_CAP_PROP_FRAME_WIDTH,640);
-	camera.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+    camera.set(cv::CAP_PROP_FRAME_WIDTH,640);
+    camera.set(cv::CAP_PROP_FRAME_HEIGHT,480);
     }
     else{
       camera.open(argv[1]);
@@ -121,8 +121,8 @@ int main(int argc, char *argv[])
 	std::cerr << "Unable to open video file "<<argv[1]
 		  << ", opening camera"<<std::endl;
 	camera.open(0);
-	camera.set(CV_CAP_PROP_FRAME_WIDTH,640);
-	camera.set(CV_CAP_PROP_FRAME_HEIGHT,480);
+    camera.set(cv::CAP_PROP_FRAME_WIDTH,640);
+    camera.set(cv::CAP_PROP_FRAME_HEIGHT,480);
       }
       else
 	outputFile = std::string(argv[1])+"_output.xml";
@@ -208,7 +208,7 @@ int main(int argc, char *argv[])
 
     tracker->_timer.write_fps(uimg); 
     cv::imshow("test",draw); 
-    int c = cvWaitKey(waitTime);
+    int c = cv::waitKey(waitTime);
     if(c == 27)break; 
     else if(c == int('d'))tracker->Reset();
     else if(c == int(' ')){

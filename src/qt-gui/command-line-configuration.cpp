@@ -21,7 +21,7 @@
 #include "tracker/Config.h"
 #include "tracker/FaceTracker.hpp"
 #include "avatar/Avatar.hpp"
-
+#include <stdexcept>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QStringList>
 

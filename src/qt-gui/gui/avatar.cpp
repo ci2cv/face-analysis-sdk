@@ -32,7 +32,7 @@ Avatar::Avatar(QObject *parent)
 : AvatarController(parent),
   currently_selected_index(0)
 {
-	abstract_avatar = AVATAR::LoadAvatar(applicationConfiguration()->pathToAvatarData().toStdString().c_str());	
+    abstract_avatar = AVATAR::LoadAvatar(applicationConfiguration()->pathToAvatarData().toStdString().c_str());
 	if (!abstract_avatar)
 		throw std::runtime_error("Failed to load the AVATAR from file.");
 	setAvatarIndex(currently_selected_index);

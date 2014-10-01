@@ -18,7 +18,8 @@
 // Copyright CSIRO 2013
 
 #include <tracker/ATM.hpp>
-#include <opencv/highgui.h>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 #include <iostream>
 #define it at<int>
 #define db at<double>

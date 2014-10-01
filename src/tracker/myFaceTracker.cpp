@@ -18,6 +18,7 @@
 // Copyright CSIRO 2013
 
 #include <tracker/myFaceTracker.hpp>
+#include <iostream>
 #define it at<int>
 #define db at<double>
 using namespace FACETRACKER;

@@ -18,6 +18,8 @@
 // Copyright CSIRO 2013
 
 #include <tracker/Warp.hpp>
+#include <opencv2/imgproc.hpp>
+
 #define it at<int>
 #define db at<double>
 #define SQR(x) ((x) * (x))
