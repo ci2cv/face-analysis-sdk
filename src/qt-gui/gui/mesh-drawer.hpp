@@ -20,12 +20,12 @@
 #ifndef _CI2CV_GUI_GUI_MESH_DRAWER_HPP_
 #define _CI2CV_GUI_GUI_MESH_DRAWER_HPP_
 
-#include <QtGui/QGraphicsItemGroup>
-#include <QtGui/QColor>
-#include <QtGui/QBrush>
-#include <QtGui/QPen>
+#include <QGraphicsItemGroup>
+#include <QColor>
+#include <QBrush>
+#include <QPen>
 
-#include <opencv/cv.h>
+#include <opencv2/core.hpp>
 
 #include <vector>
 
