@@ -19,6 +19,7 @@
 
 #include <Foundation/NSBundle.h>
 #include <Foundation/NSString.h>
+#include <Foundation/NSValue.h>
 #include <Foundation/NSPathUtilities.h>
 #include <Foundation/NSAutoreleasePool.h>
 #include <Foundation/NSDictionary.h>
