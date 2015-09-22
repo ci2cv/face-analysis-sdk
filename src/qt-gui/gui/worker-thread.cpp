@@ -24,7 +24,7 @@
 #include <stdexcept>
 #include <numeric>
 
-#include "avatar/avatar.hpp"
+#include "avatar/Avatar.hpp"
 #include "gui/avatar.hpp"
 #include "configuration.hpp"
 
