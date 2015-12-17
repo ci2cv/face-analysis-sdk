@@ -19,6 +19,7 @@
 
 #include <tracker/ATM.hpp>
 #include <opencv/highgui.h>
+#include <opencv/cv.hpp>
 #include <iostream>
 #define it at<int>
 #define db at<double>
