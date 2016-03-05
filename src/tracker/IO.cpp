@@ -19,6 +19,7 @@
 
 #include <tracker/IO.hpp>
 #include <stdio.h>
+#include <iostream>
 using namespace FACETRACKER;
 using namespace std;
 //===========================================================================
@@ -237,7 +238,8 @@ void IOBinary::ReadMat(std::ifstream &s, cv::Mat &M)
 	s.read((char*)&c, sizeof(int));
 	s.read((char*)&t, sizeof(int));
 	M = cv::Mat(r,c,t);
-	s.read(reinterpret_cast<char*>(M.datastart), M.total()*M.elemSize());
+	//s.read(reinterpret_cast<char*>(M.datastart), M.total()*M.elemSize());
+	s.read((char*)(M.datastart), M.total()*M.elemSize());
 	
 	if(!s.good()){
 	  std::cout << "Error reading matrix" << std::endl;
@@ -254,7 +256,8 @@ void IOBinary::WriteMat(std::ofstream &s, cv::Mat &M)
 	s.write(reinterpret_cast<char*>(&M.cols), sizeof(int));
 	s.write(reinterpret_cast<char*>(&t), sizeof(int));
 	//	s << M.rows << " " << M.cols << " " << M.type();
-	s.write(reinterpret_cast<char*>(M.datastart), M.total()*M.elemSize());
+	//s.write(reinterpret_cast<char*>(M.datastart), M.total()*M.elemSize());
+	s.write((char*)(M.datastart), M.total()*M.elemSize());
 
 	//	std::cout << "Mat written: "<< M.rows << "x"<< M.cols << ", type " << M.type() << std::endl; 
 

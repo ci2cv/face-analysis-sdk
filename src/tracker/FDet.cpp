@@ -16,7 +16,7 @@
 // most directory of the source code.
 
 // Copyright CSIRO 2013
-
+#include <opencv2/imgproc.hpp>
 #include <tracker/FDet.hpp>
 using namespace FACETRACKER;
 using namespace std;
@@ -76,8 +76,8 @@ cv::Rect FDet::Detect(cv::Mat im)
   for(i = 0,maxv = 0; i < obj->total; i++){
     CvRect* r = (CvRect*)cvGetSeqElem(obj,i);
     if(i == 0 || maxv < r->width*r->height){
-      maxv = r->width*r->height; R.x = r->x*_img_scale; R.y = r->y*_img_scale;
-      R.width  = r->width*_img_scale; R.height = r->height*_img_scale;
+      maxv = r->width*r->height; R.x = (int) (r->x*_img_scale); R.y = (int) (r->y*_img_scale);
+      R.width  = (int) (r->width*_img_scale); R.height = (int) (r->height*_img_scale);
     }
   }
   cvRelease((void**)(&obj)); return R;
@@ -384,10 +384,10 @@ cv::Rect SInit::ReDetect(cv::Mat &im)
   if(temp_.rows == 0)return cv::Rect();
   int x,y; float v,vb=-2;
   int ww = im.cols,hh = im.rows;
-  int w = TSCALE*ww-temp_.cols+1,h = TSCALE*hh-temp_.rows+1;
+  int w = (int) (TSCALE*ww-temp_.cols+1),h = (int) (TSCALE*hh-temp_.rows+1);
   if((small_.rows != TSCALE*hh) || (small_.cols != TSCALE*ww))
-    small_.create(TSCALE*hh,TSCALE*ww,CV_8U);
-  cv::resize(im,small_,cv::Size(TSCALE*ww,TSCALE*hh),0,0,CV_INTER_LINEAR);
+    small_.create((int)(TSCALE*hh),(int)(TSCALE*ww),CV_8U);
+  cv::resize(im,small_,cv::Size((int)(TSCALE*ww),(int)(TSCALE*hh)),0,0,CV_INTER_LINEAR);
   if((ncc_.rows != h) || (ncc_.cols != w))ncc_.create(h,w,CV_32F);
   IplImage im_o = small_,temp_o = temp_,ncc_o = ncc_;
   cvMatchTemplate(&im_o,&temp_o,&ncc_o,CV_TM_CCOEFF_NORMED);
@@ -398,8 +398,8 @@ cv::Rect SInit::ReDetect(cv::Mat &im)
       v = *p++; if(v > vb){vb = v; R.x = x; R.y = y;}
     }
   }
-  R.x *= 1.0/TSCALE; R.y *= 1.0/TSCALE; 
-  R.width *= 1.0/TSCALE; R.height *= 1.0/TSCALE; return R;
+  R.x = (int) (R.x * 1.0/TSCALE); R.y = (int) (R.y * 1.0/TSCALE); 
+  R.width = (int) (R.width * 1.0/TSCALE); R.height = (int) (R.height * 1.0/TSCALE); return R;
 }
 //===========================================================================
 cv::Rect SInit::Update(cv::Mat &im,cv::Mat &s,bool rsize)
@@ -418,18 +418,18 @@ cv::Rect SInit::Update(cv::Mat &im,cv::Mat &s,bool rsize)
     return cv::Rect(0,0,0,0);
   else{
     xmin *= TSCALE; ymin *= TSCALE; xmax *= TSCALE; ymax *= TSCALE;
-    cv::Rect R = cv::Rect(std::floor(xmin),std::floor(ymin),
-			  std::ceil(xmax-xmin),std::ceil(ymax-ymin));
+    cv::Rect R = cv::Rect((int)std::floor(xmin), (int)std::floor(ymin),
+		(int)std::ceil(xmax-xmin), (int)std::ceil(ymax-ymin));
     int ww = im.cols,hh = im.rows;
     if(rsize){
       if((small_.rows != TSCALE*hh) || (small_.cols != TSCALE*ww))
-	small_.create(TSCALE*hh,TSCALE*ww,CV_8U);
-      cv::resize(im,small_,cv::Size(TSCALE*ww,TSCALE*hh),0,0,CV_INTER_LINEAR);
+	small_.create((int)(TSCALE*hh), (int)(TSCALE*ww),CV_8U);
+      cv::resize(im,small_,cv::Size((int)(TSCALE*ww), (int)(TSCALE*hh)),0,0,CV_INTER_LINEAR);
     }
-    cv::resize(im,small_,cv::Size(TSCALE*ww,TSCALE*hh),0,0,CV_INTER_LINEAR);
+    cv::resize(im,small_,cv::Size((int)(TSCALE*ww), (int)(TSCALE*hh)),0,0,CV_INTER_LINEAR);
     temp_ = small_(R).clone(); 
-    R.x *= 1.0/TSCALE; R.y *= 1.0/TSCALE; 
-    R.width *= 1.0/TSCALE; R.height *= 1.0/TSCALE; return R;
+    R.x = (int) (R.x * 1.0/TSCALE); R.y = (int) (R.y * 1.0/TSCALE);
+    R.width = (int) (R.width * 1.0/TSCALE); R.height = (int) (R.height * 1.0/TSCALE); return R;
   }
 }
 //===========================================================================

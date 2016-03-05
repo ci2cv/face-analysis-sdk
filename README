@@ -18,3 +18,13 @@ Single Image", AFGR Workshop 2011.
 If you use the SDK, we ask that you reference the following paper:
 M. Cox, J. Nuevo, J. Saragih and S. Lucey, "CSIRO Face Analysis SDK",
 AFGR 2013.
+
+---
+
+Here are my updates in the original code, included in this fork of the project:
+
+- added OpenCV missing includes (perhaps due to changes in version used?)
+- type casts were made explicit to remove the warning messages
+- array allocations were replaced with the operator `new[]`
+- Windows/POSIX-specific function calls were enclosed in `#ifdefs` based on the operating system defined at compilation time, and the the best corresponding functions were used for Windows (for instance: `PathRemoveFileSpec` and `PathStripPath` respectively replaced `dirname` and `basename` in Windows).
+- the class `ForkRunner` was completely replaced in Windows by the implementation proposed by Ben Howell [here](http://www.benhowell.net/guide/2015/03/16/porting-face-analysis-sdk-to-windows/); although [there is no direct equivalent of `fork` (used by the original class) on Windows](http://stackoverflow.com/a/9148072/2896619) and [`CreateProcess` does not have the same behaviour](http://stackoverflow.com/q/985281/2896619).

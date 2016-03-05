@@ -19,11 +19,22 @@
 
 #include "helpers.hpp"
 #include <fstream>
+
+#ifdef _WIN32
+#define NOMINMAX
+#include <windows.h>
+#include "Shlwapi.h"
+#else
 #include <libgen.h>
+#endif
+
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <functional>
 #include <iostream>
+#include <algorithm>
+#include <iterator>
+#include <set>
 
 bool
 nan_p(double value)
@@ -276,19 +287,37 @@ pathname_name(const std::string &pathname)
 std::string
 pathname_directory(const std::string &pathname)
 {
-  char buffer[pathname.size() + 1];
-  memset(buffer, 0, sizeof(buffer));
-  std::copy(pathname.begin(), pathname.end(), buffer);
-  return std::string(dirname(buffer));
+#ifdef _WIN32
+	char *buffer = new char[pathname.size() + 1];
+	memset(buffer, 0, pathname.size() + 1);
+	PathRemoveFileSpec(buffer);
+	std::string ret = std::string(buffer);
+	delete[] buffer;
+	return ret;
+#else
+	char buffer[pathname.size() + 1];
+	memset(buffer, 0, sizeof(buffer));
+	std::copy(pathname.begin(), pathname.end(), buffer);
+	return std::string(dirname(buffer));
+#endif
 }
 
 std::string
 pathname_sans_directory(const std::string &pathname)
 {
+#ifdef _WIN32
+	char *buffer = new char[pathname.size() + 1];
+	memset(buffer, 0, pathname.size() + 1);
+	PathStripPath(buffer);
+	std::string ret = std::string(buffer);
+	delete[] buffer;
+	return ret;
+#else
   char buffer[pathname.size() + 1];
   memset(buffer, 0, sizeof(buffer));
   std::copy(pathname.begin(), pathname.end(), buffer);
   return std::string(basename(buffer));
+#endif
 }
 
 std::string

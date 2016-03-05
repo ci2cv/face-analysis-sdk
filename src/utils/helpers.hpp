@@ -24,6 +24,7 @@
 #include <list>
 #include <stdexcept>
 #include <cstdarg>
+#include <stdarg.h> //fixes issue with va_args
 
 /** Evaluates predicate on all items within the range (begin,end)
     until predicate is false, otherwise returns true. */

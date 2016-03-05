@@ -20,6 +20,8 @@
 #include "command-line-options.hpp"
 #include <iostream>
 #include <sstream>
+#include <functional>
+#include <cctype>
 
 //Utilities
 template <typename Operation2, typename Operation1>

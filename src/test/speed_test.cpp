@@ -25,6 +25,7 @@
 #include <fstream>
 
 #include <test/command-line-options.hpp>
+#include "opencv2/opencv.hpp"
 
 #define db at<double>
 #define it at<int>
@@ -54,14 +55,14 @@ void draw_shape(cv::Mat &image,cv::Mat &shape,cv::Mat &con)
 {
   int i,n = shape.rows/2; cv::Point p1,p2; 
   for(i = 0; i < con.cols; i++){
-    p1 = cv::Point(shape.at<double>(con.at<int>(0,i),0),
-		   shape.at<double>(con.at<int>(0,i)+n,0));
-    p2 = cv::Point(shape.at<double>(con.at<int>(1,i),0),
-		   shape.at<double>(con.at<int>(1,i)+n,0));
+    p1 = cv::Point((int)shape.at<double>(con.at<int>(0,i),0),
+		(int)shape.at<double>(con.at<int>(0,i)+n,0));
+    p2 = cv::Point((int)shape.at<double>(con.at<int>(1,i),0),
+		(int)shape.at<double>(con.at<int>(1,i)+n,0));
     cv::line(image,p1,p2,CV_RGB(0,255,0),1);
   }
   for(i = 0; i < n; i++){    
-    p1 = cv::Point(shape.at<double>(i,0),shape.at<double>(i+n,0));
+    p1 = cv::Point((int)shape.at<double>(i,0), (int)shape.at<double>(i+n,0));
     cv::circle(image,p1,2,CV_RGB(255,0,0));
   }return;
 }
@@ -69,9 +70,9 @@ void draw_shape(cv::Mat &image,cv::Mat &shape,cv::Mat &con)
 void draw_health(cv::Mat &I,int health)
 {
   double v = double(health)/10.0;
-  int w = 0.1*double(I.cols),h = 0.05*double(I.rows);
+  int w = (int)(0.1*double(I.cols)),h = (int) (0.05*double(I.rows));
   cv::rectangle(I,cv::Point(h/2,h/2),cv::Point(w+h/2,h+h/2),CV_RGB(0,0,0),3);
-  cv::Mat im = I(cv::Rect(h/2+3,h/2+3,v*(w-5),h-5)); im = CV_RGB(0,0,255);
+  cv::Mat im = I(cv::Rect((int)(h/2+3), (int)(h/2+3), (int)(v*(w-5)), (int)(h-5))); im = CV_RGB(0,0,255);
   char str[256]; sprintf(str,"%d%%",(int)(100*v+0.5));
   cv::putText(I,str,cv::Point(w+h/2+w/20,h+h/2),
 	      CV_FONT_HERSHEY_SIMPLEX,h*0.045,CV_RGB(0,0,255),2); return;
@@ -140,7 +141,7 @@ int main(int argc, char** argv)
     
     try {
       camera_index                 = options.argument<int>("camera", 0);
-    } catch (std::exception &e) {
+    } catch (std::exception) {
       camera_index = -1;
     }
 
@@ -168,7 +169,7 @@ int main(int argc, char** argv)
 
   FACETRACKER::FaceTrackerParams * p = FACETRACKER::LoadFaceTrackerParams(face_tracker_parameters_file.c_str());
   FACETRACKER::myFaceTrackerParams* pp = dynamic_cast<FACETRACKER::myFaceTrackerParams *>(p);
-  pp->shape_predict = eye_mouth_refine;
+  pp->shape_predict = (eye_mouth_refine != 0);
 
   char* fname = NULL;
   cv::Mat con = FACETRACKER::IO::LoadCon(face_connections_file.c_str());
@@ -348,8 +349,8 @@ int main(int argc, char** argv)
     else if(c == int('i')){
       avatar->Initialise(im,tracker->_shape); init = true;
     }
-    input_frame_last_captured += 1.0/(1000.0*cv::getTickFrequency());
-    output_frame_last_output += 1.0/(1000.0*cv::getTickFrequency());
+    input_frame_last_captured += (int) (1.0/(1000.0*cv::getTickFrequency()));
+    output_frame_last_output += (int) (1.0/(1000.0*cv::getTickFrequency()));
 
     int64 total2 = cv::getTickCount(); 
     total_time += total2-total1;

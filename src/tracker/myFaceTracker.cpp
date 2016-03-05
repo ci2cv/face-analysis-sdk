@@ -17,6 +17,7 @@
 
 // Copyright CSIRO 2013
 
+#include <iostream>
 #include <tracker/myFaceTracker.hpp>
 #define it at<int>
 #define db at<double>
@@ -243,7 +244,7 @@ void myFaceTrackerParams::Load(const char* fname, bool binary)
 	 >> gamma
 	 >> init_type
 	 >> track_type
-	 >> t; shape_predict = t;
+	 >> t; shape_predict = (t != 0);
     file >> t; init_wSize.resize(t);
     for(int i = 0; i < int(init_wSize.size()); i++)file >> init_wSize[i];
     file >> t; track_wSize.resize(t);
@@ -463,7 +464,7 @@ myFaceTracker::NewFrame(cv::Mat &im,
     else{
       if(_atm._scale == 1)smooth_ = gray_;
       else{
-	cv::Size ksize((1.0/_atm._scale)*3+1,(1.0/_atm._scale)*3+1);
+	cv::Size ksize((int) ((1.0/_atm._scale)*3+1), (int) ((1.0/_atm._scale)*3+1));
 	cv::GaussianBlur(gray_,smooth_,ksize,0,0);
       }
       vector<cv::Mat> visi;
@@ -543,7 +544,7 @@ myFaceTracker::NewFrame(cv::Mat &im,
       if (_atm._scale == 1) {
 	smooth_ = gray_;
       } else {
-	cv::Size ksize((1.0/p->atm_scale)*3+1,(1.0/p->atm_scale)*3+1);
+	cv::Size ksize((int) ((1.0/p->atm_scale)*3+1), (int) ((1.0/p->atm_scale)*3+1));
 	cv::GaussianBlur(gray_,smooth_,ksize,0,0);
       }
       _atm.Init(p->center,pose,_shape,smooth_,p->atm_tri,p->atm_scale);

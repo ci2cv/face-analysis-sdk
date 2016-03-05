@@ -17,7 +17,10 @@
 
 // Copyright CSIRO 2013
 
+#include <iostream>
+
 #include <opencv2/core/core.hpp>
+#include <opencv2/imgproc.hpp>
 
 #include "Detector.hpp"
 #include "IO.hpp"
@@ -105,7 +108,7 @@ Detector::getResponsesForRefShape(double scale)
   if(scale == 1.)
     return prob_;
   else{    
-    cv::Size sz (prob_.at(0).cols / scale, prob_.at(0).rows/scale);
+    cv::Size sz ((int) (prob_.at(0).cols / scale), (int) (prob_.at(0).rows/scale));
 
     bool t = false;
     if(sz.width%2==0){ sz.width++; t = true;}
@@ -171,7 +174,7 @@ Detector::getResponsesForRefShape(cv::Size wSize, cv::Mat r)
     cv::Size sz;
     for (size_t i=0; i<prob_.size(); i++) {
       if(!prob_.at(i).empty()){
-	sz = cv::Size(prob_.at(i).cols / scale, prob_.at(i).rows/scale);
+	sz = cv::Size((int) (prob_.at(i).cols / scale), (int) (prob_.at(i).rows/scale));
 	break;
       }
     }

@@ -22,6 +22,7 @@
 #include <avatar/myAvatar.hpp>
 #include <tracker/CLM.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 #define it at<int>
 #define db at<double>
 using namespace AVATAR;
@@ -342,8 +343,8 @@ myAvatar::Animate(cv::Mat &draw,
     dx0_ = dx; dy0_ = dy;
     this->GetWidthHeight(_shapes[_idx],_lpupil[_idx].idx,wl,hl);
     this->GetWidthHeight(_shapes[_idx],_rpupil[_idx].idx,wr,hr);
-    lp.x = _lpupil[_idx].px + dx*wl; lp.y = _lpupil[_idx].py + dy*hl;
-    rp.x = _rpupil[_idx].px + dx*wr; rp.y = _rpupil[_idx].py + dy*hr;
+    lp.x = (int) (_lpupil[_idx].px + dx*wl); lp.y = (int) (_lpupil[_idx].py + dy*hl);
+    rp.x = (int) (_rpupil[_idx].px + dx*wr); rp.y = (int) (_rpupil[_idx].py + dy*hr);
     this->WarpBackPupils(lp,rp,_shapes[_idx],_shape);
     _gpdm.CalcParams(shape,gplocal_,gpglobl_);
     lrad = _lpupil[_idx].rad*gpglobl_.db(0,0);
@@ -468,8 +469,8 @@ void myAvatar::WarpTexture(cv::Mat &src_pts,cv::Mat &dst_pts,
       if(ymin > src_pts.db(n+i,0))ymin = src_pts.db(n+i,0);
       if(ymax < src_pts.db(n+i,0))ymax = src_pts.db(n+i,0);
     }
-    cv::Rect R(floor(xmin),floor(ymin),
-	       ceil(xmax-xmin),ceil(ymax-ymin));
+    cv::Rect R((int)floor(xmin), (int)floor(ymin),
+		(int)ceil(xmax-xmin), (int)ceil(ymax-ymin));
     if(R.width*R.height > 1){
       cv::Mat M(R.height,3*R.width,CV_8U);
       for(int i = 0; i < 3; i++){
@@ -669,7 +670,7 @@ myAvatar::GetPupil(cv::Mat &im,
   if((rect.width <= 0) || (rect.height <= 0)){
     cv::Point p(0,0);
     for(int i = 0; i < idx.rows; i++){
-      p.x += pt.db(i,0); p.y += pt.db(i+idx.rows,0);
+      p.x += (int) (pt.db(i,0)); p.y += (int) (pt.db(i+idx.rows,0));
     }
     p.x /= idx.rows; p.y /= idx.rows; return p;
   }
@@ -677,7 +678,7 @@ myAvatar::GetPupil(cv::Mat &im,
      (rect.y < 0) || (rect.y + rect.height >= im.rows)){
     cv::Point p; p.x = 0; p.y = 0;
     for(int i = 0; i < idx.rows; i++){
-      p.x += pt.db(i,0); p.y += pt.db(i+idx.rows,0);
+      p.x += (int) (pt.db(i,0)); p.y += (int) (pt.db(i+idx.rows,0));
     }
     p.x /= idx.rows; p.y /= idx.rows; return p;
   }
@@ -694,10 +695,10 @@ myAvatar::GetPupil(cv::Mat &im,
   if(sum == 0){
     p.x = 0; p.y = 0;
     for(int i = 0; i < idx.rows; i++){
-      p.x += pt.db(i,0); p.y += pt.db(i+idx.rows,0);
+      p.x += (int) (pt.db(i,0)); p.y += (int) (pt.db(i+idx.rows,0));
     }
     p.x /= idx.rows; p.y /= idx.rows;
-  }else{p.x = vx/sum; p.y = vy/sum;}
+  }else{p.x = (int) (vx/sum); p.y = (int) (vy/sum);}
   return p;
 }
 //==============================================================================
@@ -714,7 +715,7 @@ myAvatar::GetBoundingBox(cv::Mat &pt)
     if(ymin > pt.db(i+n,0))ymin = pt.db(i+n,0);
     if(ymax < pt.db(i+n,0))ymax = pt.db(i+n,0);
   }
-  cv::Rect r(xmin,ymin,xmax-xmin,ymax-ymin); return r;
+  cv::Rect r((int)xmin, (int)ymin, (int)(xmax-xmin), (int)(ymax-ymin)); return r;
 }
 //==============================================================================
 void 
@@ -743,9 +744,9 @@ myAvatar::DrawPupil(double px,
 	    double vx = (pupil[0].cols-1)/2 + (x-px)*((pupil[0].cols-1)/2)/rad;
 	    double vy = (pupil[0].rows-1)/2 + (y-py)*((pupil[0].rows-1)/2)/rad;
 	    for(int i = 0; i < 3; i++){
-	      img[i].at<uchar>(y,x) = FACETRACKER::bilinInterp(pupil[i],vx,vy);
+	      img[i].at<uchar>(y,x) = (uchar) FACETRACKER::bilinInterp(pupil[i],vx,vy);
 	    }
-	  }else{for(int i = 0; i < 3; i++)img[i].at<uchar>(y,x) = b.val[i];}
+	  }else{for(int i = 0; i < 3; i++)img[i].at<uchar>(y,x) = (uchar) b.val[i];}
 	}
       }
     }
@@ -768,7 +769,7 @@ myAvatar::WarpBackLeftPupil(cv::Point &p,
   cv::solve(X,Y,Z,cv::DECOMP_SVD);
   double a = Z.db(0,0),b = Z.db(1,0),x = Z.db(2,0),y = Z.db(3,0);
   double vx = a*p.x + b*p.y + x,vy = a*p.y - b*p.x + y;
-  cv::Point P(vx,vy); return P;
+  cv::Point P((int)vx, (int)vy); return P;
 }
 //=============================================================================
 cv::Point 
@@ -787,7 +788,7 @@ myAvatar::WarpBackRightPupil(cv::Point &p,
   cv::solve(X,Y,Z,cv::DECOMP_SVD);
   double a = Z.db(0,0),b = Z.db(1,0),x = Z.db(2,0),y = Z.db(3,0);
   double vx = a*p.x + b*p.y + x,vy = a*p.y - b*p.x + y;
-  cv::Point P(vx,vy); return P;
+  cv::Point P((int)vx, (int)vy); return P;
 }
 //=============================================================================
 void 
@@ -1054,8 +1055,8 @@ void myAvatar::AddAvatar(cv::Mat &image, cv::Mat &points, cv::Mat &eyes)
     rrpupil.scelera = cv::Scalar(150,150,150);
     cv::Mat limg = cv::Mat::zeros(101,101,CV_8UC3);
     cv::Mat rimg = cv::Mat::zeros(101,101,CV_8UC3);
-    cv::circle(limg,cv::Point((limg.rows-1)/2,(limg.rows-1)/2),
-	       (limg.rows-1)*0.3,CV_RGB(50,50,50),(limg.rows-1)/4);
+    cv::circle(limg,cv::Point((int)((limg.rows-1)/2), (int)((limg.rows-1)/2)),
+		(int)((limg.rows-1)*0.3),CV_RGB(50,50,50), (int)((limg.rows-1)/4));
     cv::circle(rimg,cv::Point((rimg.rows-1)/2,(rimg.rows-1)/2),
 	       (rimg.rows-1)/4,CV_RGB(50,50,50),(limg.rows-1)/4);
     llpupil.image.resize(3); cv::split(limg,llpupil.image);
@@ -1172,7 +1173,7 @@ void myAvatar::GetEyes(cv::Mat &pt,cv::Mat &im,
     for(int x = 0; x < size; x++){
       double v = sqrt((y-(size-1)/2)*(y-(size-1)/2) + 
 		      (x-(size-1)/2)*(x-(size-1)/2));
-      int vi = floor((double(d)-1.0)*v/((size-1)/2));
+      int vi = (int) floor((double(d)-1.0)*v/((size-1)/2));
       if(v < (size-1)/2){
 	double xl = cxl + (x - (size-1)/2)*lrad/((size-1)/2);
 	double yl = cyl + (y - (size-1)/2)*lrad/((size-1)/2);
@@ -1183,14 +1184,14 @@ void myAvatar::GetEyes(cv::Mat &pt,cv::Mat &im,
 	    lrgb[i].at<uchar>(y,x) = 
 	      (uchar)FACETRACKER::bilinInterp(rgb[i],xl,yl);
 	}else{	 
-	  for(int i = 0; i < 3; i++)lrgb[i].at<uchar>(y,x) = Tl.db(vi+d*i,0);
+	  for(int i = 0; i < 3; i++)lrgb[i].at<uchar>(y,x) = (uchar) Tl.db(vi+d*i,0);
 	}
 	if(FACETRACKER::isWithinTri(xr,yr,tri,rpt)>=0){
 	  for(int i = 0; i < 3; i++)
 	    rrgb[i].at<uchar>(y,x) = 
 	      (uchar)FACETRACKER::bilinInterp(rgb[i],xr,yr);
 	}else{	 
-	  for(int i = 0; i < 3; i++)rrgb[i].at<uchar>(y,x) = Tr.db(vi+d*i,0);
+	  for(int i = 0; i < 3; i++)rrgb[i].at<uchar>(y,x) = (uchar) Tr.db(vi+d*i,0);
 	}
       }
     }
@@ -1256,12 +1257,12 @@ myAvatarParams::Load(const char* fname, bool binary)
     ifstream file(fname); assert(file.is_open());
     int t; file >> t; 
     assert(t == AVATAR::IO::MYAVATARPARAMS);
-    file >> t; animate_rigid = bool(t);
-    file >> t; animate_exprs = bool(t);
-    file >> t; animate_textr = bool(t);
-    file >> t; animate_eyes = bool(t);
-    file >> t; avatar_shape = bool(t);
-    file >> t; oral_cavity = bool(t);
+    file >> t; animate_rigid = (t != 0);
+    file >> t; animate_exprs = (t != 0);
+    file >> t; animate_textr = (t != 0);
+    file >> t; animate_eyes = (t != 0);
+    file >> t; avatar_shape = (t != 0);
+    file >> t; oral_cavity = (t != 0);
     file >> alpha; file.close(); 
     type = AVATAR::IO::MYAVATARPARAMS;
   } 
@@ -1271,12 +1272,12 @@ myAvatarParams::Load(const char* fname, bool binary)
 
     s.read(reinterpret_cast<char*>(&t), sizeof(t));
     assert(t == AVATAR::IOBinary::MYAVATARPARAMS);
-    s.read(reinterpret_cast<char*>(&t), sizeof(t)); animate_rigid = (bool)t;
-    s.read(reinterpret_cast<char*>(&t), sizeof(t)); animate_exprs = (bool)t;
-    s.read(reinterpret_cast<char*>(&t), sizeof(t)); animate_textr = (bool)t;
-    s.read(reinterpret_cast<char*>(&t), sizeof(t)); animate_eyes = (bool)t;
-    s.read(reinterpret_cast<char*>(&t), sizeof(t)); avatar_shape = (bool)t;
-    s.read(reinterpret_cast<char*>(&t), sizeof(t)); oral_cavity = (bool)t;
+    s.read(reinterpret_cast<char*>(&t), sizeof(t)); animate_rigid = (t != 0);
+    s.read(reinterpret_cast<char*>(&t), sizeof(t)); animate_exprs = (t != 0);
+    s.read(reinterpret_cast<char*>(&t), sizeof(t)); animate_textr = (t != 0);
+    s.read(reinterpret_cast<char*>(&t), sizeof(t)); animate_eyes = (t != 0);
+    s.read(reinterpret_cast<char*>(&t), sizeof(t)); avatar_shape = (t != 0);
+    s.read(reinterpret_cast<char*>(&t), sizeof(t)); oral_cavity = (t != 0);
     s.read(reinterpret_cast<char*>(&alpha), sizeof(alpha));
     type = AVATAR::IO::MYAVATARPARAMS;
     s.close();

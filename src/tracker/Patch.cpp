@@ -17,6 +17,7 @@
 
 // Copyright CSIRO 2013
 
+#include <opencv2/imgproc.hpp>
 #include <tracker/Patch.hpp>
 #define SGN(x) ((x<0) ? 0:1)
 using namespace FACETRACKER;
@@ -78,7 +79,7 @@ void LBP(cv::Mat &im,cv::Mat &lbp)
       v[4] = *p2++; v[0] = *p2++; v[5] = *p2;
       v[1] = *p1++; v[2] = *p1++; v[3] = *p1;
       v[6] = *p3++; v[7] = *p3++; v[8] = *p3;
-      *lp++ = 
+      *lp++ = (float)
 	SGN(v[0]-v[1])*2   + SGN(v[0]-v[2])*4   + 
 	SGN(v[0]-v[3])*8   + SGN(v[0]-v[4])*16  + 
 	SGN(v[0]-v[5])*32  + SGN(v[0]-v[6])*64  + 
