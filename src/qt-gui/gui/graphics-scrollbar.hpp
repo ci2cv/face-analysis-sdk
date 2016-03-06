@@ -20,11 +20,11 @@
 #ifndef _CI2CV_GUI_GUI_GRAPHICS_SCROLLBAR_HPP_
 #define _CI2CV_GUI_GUI_GRAPHICS_SCROLLBAR_HPP_
 
-#include <QtCore/QObject>
-#include <QtCore/QRectF>
-#include <QtGui/QGraphicsItemGroup>
-#include <QtGui/QBrush>
-#include <QtGui/QPen>
+#include <QObject>
+#include <QRectF>
+#include <QGraphicsItemGroup>
+#include <QBrush>
+#include <QPen>
 
 namespace CI2CVGui {
 	class GraphicsScrollbar;

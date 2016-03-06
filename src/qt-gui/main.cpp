@@ -17,10 +17,10 @@
 
 // Copyright CSIRO 2013
 
-#include <QtCore/QObject>
-#include <QtGui/QApplication>
-#include <QtCore/QStateMachine>
-#include <QtCore/QDebug>
+#include <QObject>
+#include <QApplication>
+#include <QStateMachine>
+#include <QDebug>
 
 #include <stdexcept>
 #include <iostream>

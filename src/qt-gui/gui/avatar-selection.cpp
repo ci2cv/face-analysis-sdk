@@ -20,8 +20,8 @@
 #include "gui/avatar-selection.hpp"
 #include "controllers.hpp"
 
-#include <QtCore/QDebug>
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QDebug>
+#include <QGraphicsSceneMouseEvent>
 
 using namespace CI2CVGui;
 

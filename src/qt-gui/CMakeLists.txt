@@ -1,7 +1,13 @@
 # -*-cmake-*-
-find_package(Qt4 REQUIRED)
+set(CMAKE_INCLUDE_CURRENT_DIR ON) # Find includes in corresponding build directories
+set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed
+set(CMAKE_AUTORCC ON) # Instruct CMake to run rcc automatically when needed
+set(CMAKE_AUTOUIC ON) # Instruct CMake to run uic automatically when needed
+find_package(Qt5Widgets)
 
-INCLUDE( ${QT_USE_FILE} )
+cmake_policy (SET CMP0020 NEW)
+
+#INCLUDE( ${QT_USE_FILE} )
 
 #set(CMAKE_VERBOSE_MAKEFILE true)
 
@@ -33,19 +39,25 @@ SET(MOC_HEADERS
   "gui/worker-thread.hpp")
 #  "gui/item-positions-calculator.hpp")
 
-QT4_WRAP_CPP(MOC_SRCS ${MOC_HEADERS})
+#QT5_WRAP_CPP(MOC_SRCS ${MOC_HEADERS})
 
 INCLUDE_DIRECTORIES(".")
 set_source_files_properties(osx-configuration.mm PROPERTIES COMPILE_FLAGS -ObjC++)
 
+if(WIN32)
+    set(TARGET_TYPE WIN32)
+elseif(APPLE)
+    set(TARGET_TYPE MACOSX_BUNDLE)
+endif()
 
-add_executable(demo-application
+add_executable(demo-application ${TARGET_TYPE}
   main.cpp
   command-line-configuration.cpp
   ${guiFILES}
-  ${MOC_SRCS}
+#  ${MOC_SRCS}
   ${EXTRA_SRC})
-target_link_libraries(demo-application ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim utilities ${EXTRA_LIBS})
+    
+target_link_libraries(demo-application ${LIBS} Qt5::Widgets clmTracker avatarAnim utilities ${EXTRA_LIBS})
 
 # Apple Specific Targets
 
@@ -54,18 +66,18 @@ IF(APPLE)
   set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/Configuration.plist PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
   
   SET(EXTRA_SRC "Configuration.plist")
+  SET(CONFIG_SRC "osx-configuration.mm")
 
 ENDIF()
 
-
-ADD_EXECUTABLE(${BundleName} MACOSX_BUNDLE 
+ADD_EXECUTABLE(${BundleName} ${TARGET_TYPE} 
   main.cpp 
-  osx-configuration.mm
+  ${CONFIG_SRC}
   ${guiFILES} 
-  ${MOC_SRCS}
+  #${MOC_SRCS}
   ${EXTRA_SRC}
   )
-TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim ${EXTRA_LIBS})
+TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} Qt5::Widgets clmTracker avatarAnim ${EXTRA_LIBS})
 
 
 # IF(APPLE)

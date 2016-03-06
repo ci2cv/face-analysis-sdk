@@ -23,6 +23,11 @@ SET(TRACKER_FILES
   "ShapePredictor.cpp"
   "myFaceTracker.cpp")
 
+if(WIN32)
+    set(LIBTYPE STATIC)
+else()
+    set(LIBTYPE SHARED)
+endif()  
 
-ADD_LIBRARY(clmTracker SHARED ${TRACKER_FILES})
+ADD_LIBRARY(clmTracker ${LIBTYPE} ${TRACKER_FILES})
 TARGET_LINK_LIBRARIES(clmTracker ${LIBS})
