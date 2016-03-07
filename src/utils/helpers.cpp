@@ -35,6 +35,7 @@
 #include <algorithm>
 #include <iterator>
 #include <set>
+#include <limits>
 
 bool
 nan_p(double value)

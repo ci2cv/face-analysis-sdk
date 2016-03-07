@@ -5,6 +5,7 @@
 
 #include <opencv2/highgui/highgui.hpp>
 #include <iostream>
+#include <limits>
 
 void
 print_usage()

@@ -23,6 +23,7 @@
 #include <opencv/highgui.h>
 #include <iostream>
 #include <fstream>
+#include <limits>
 
 #include <test/command-line-options.hpp>
 #include "opencv2/opencv.hpp"
