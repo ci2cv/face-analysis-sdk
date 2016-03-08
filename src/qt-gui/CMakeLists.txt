@@ -15,6 +15,7 @@ SET(BundleName "qt-gui")
 
 SET(guiFILES "application-states.cpp"
   "controllers.cpp"
+  "command-line-configuration.cpp"
   "configuration.cpp"
   "gui/avatar-selection.cpp"
   "gui/main-window.cpp"
@@ -54,7 +55,7 @@ add_executable(demo-application ${TARGET_TYPE}
   main.cpp
   command-line-configuration.cpp
   ${guiFILES}
-#  ${MOC_SRCS}
+  ${MOC_SRCS}
   ${EXTRA_SRC})
     
 target_link_libraries(demo-application ${LIBS} Qt5::Widgets clmTracker avatarAnim utilities ${EXTRA_LIBS})
@@ -74,7 +75,7 @@ ADD_EXECUTABLE(${BundleName} ${TARGET_TYPE}
   main.cpp 
   ${CONFIG_SRC}
   ${guiFILES} 
-  #${MOC_SRCS}
+  ${MOC_SRCS}
   ${EXTRA_SRC}
   )
 TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} Qt5::Widgets clmTracker avatarAnim ${EXTRA_LIBS})
