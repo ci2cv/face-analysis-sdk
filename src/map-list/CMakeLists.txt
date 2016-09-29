@@ -6,3 +6,5 @@ add_executable(map-list
 target_link_libraries(map-list
   utilities
   ${LIBS})
+  
+install(TARGETS map-list DESTINATION bin)

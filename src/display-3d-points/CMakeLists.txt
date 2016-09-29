@@ -5,3 +5,5 @@ target_link_libraries(display-3d-points
   utilities
   clmTracker
   ${LIBS})
+
+install(TARGETS display-3d-points DESTINATION bin)

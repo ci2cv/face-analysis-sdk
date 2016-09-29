@@ -60,6 +60,8 @@ add_executable(demo-application ${TARGET_TYPE}
     
 target_link_libraries(demo-application ${LIBS} Qt5::Widgets clmTracker avatarAnim utilities ${EXTRA_LIBS})
 
+install(TARGETS demo-application DESTINATION bin)
+
 # Apple Specific Targets
 
 IF(APPLE)
@@ -80,6 +82,7 @@ ADD_EXECUTABLE(${BundleName} ${TARGET_TYPE}
   )
 TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} Qt5::Widgets clmTracker avatarAnim ${EXTRA_LIBS})
 
+install(TARGETS ${BundleName} DESTINATION bin)
 
 # IF(APPLE)
 
@@ -101,7 +104,7 @@ IF(APPLE)
     BUNDLE DESTINATION . COMPONENT Runtime
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
-  
+ 
   FILE(GLOB trackerFiles "${CMAKE_CURRENT_SOURCE_DIR}/../tracker/resources/*")
   FILE(GLOB avatarFiles "${CMAKE_CURRENT_SOURCE_DIR}/../avatar/resources/*")
 

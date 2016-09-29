@@ -7,3 +7,5 @@ target_link_libraries(create-avatar-model
   utilities
   avatarAnim
   ${LIBS})
+
+install(TARGETS create-avatar-model DESTINATION bin)

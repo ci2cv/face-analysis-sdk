@@ -6,3 +6,5 @@ add_executable(change-pathnames
 target_link_libraries(change-pathnames
   utilities
   ${LIBS})
+  
+install(TARGETS change-pathnames DESTINATION bin)

@@ -10,3 +10,7 @@ TARGET_LINK_LIBRARIES(speed_test ${LIBS} clmTracker avatarAnim)
 
 ADD_EXECUTABLE(add_avatar add_avatar.cpp)
 TARGET_LINK_LIBRARIES(add_avatar ${LIBS} avatarAnim)
+
+install(TARGETS test_avatar DESTINATION bin)
+install(TARGETS speed_test DESTINATION bin)
+install(TARGETS add_avatar DESTINATION bin)

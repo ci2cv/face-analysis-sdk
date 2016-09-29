@@ -16,3 +16,6 @@ add_library(utilities
 	points.cpp)
     
 target_link_libraries(utilities ${LIBS} ${EXTRALIBS})
+
+install(TARGETS utilities DESTINATION lib)
+install(FILES points.hpp DESTINATION include)

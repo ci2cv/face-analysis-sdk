@@ -6,3 +6,5 @@ add_executable(display-tracking
 target_link_libraries(display-tracking
   utilities
   ${LIBS})
+
+install(TARGETS display-tracking DESTINATION bin)
