@@ -32,5 +32,5 @@ endif()
 ADD_LIBRARY(clmTracker ${LIBTYPE} ${TRACKER_FILES})
 TARGET_LINK_LIBRARIES(clmTracker ${LIBS})
 
-install(TARGETS clmTracker DESTINATION lib)
+install(TARGETS clmTracker EXPORT CSIRO DESTINATION lib)
 install(FILES FaceTracker.hpp DESTINATION include)

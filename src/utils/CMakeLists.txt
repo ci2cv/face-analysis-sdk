@@ -17,5 +17,5 @@ add_library(utilities
     
 target_link_libraries(utilities ${LIBS} ${EXTRALIBS})
 
-install(TARGETS utilities DESTINATION lib)
+install(TARGETS utilities EXPORT CSIRO DESTINATION lib)
 install(FILES points.hpp DESTINATION include)
