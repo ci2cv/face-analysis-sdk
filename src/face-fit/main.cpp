@@ -22,6 +22,7 @@
 #include "utils/points.hpp"
 #include "tracker/FaceTracker.hpp"
 #include <opencv2/highgui/highgui.hpp>
+#include <iostream>
 
 using namespace FACETRACKER;
 
@@ -188,7 +189,7 @@ main(int argc, char **argv)
 {
   try {
     return run_program(argc, argv);
-  } catch (user_pressed_escape &e) {
+  } catch (user_pressed_escape) {
     std::cout << "Stopping prematurely." << std::endl;
     return 1;
   } catch (std::exception &e) {
@@ -395,11 +396,11 @@ compute_pose_image(const Pose &pose, int height, int width)
   
   cv::Point centre(width/2, height/2);
   // pitch
-  cv::line(rv, centre, cv::Point(axes(0,0), axes(1,0)), cv::Scalar(255,0,0));
+  cv::line(rv, centre, cv::Point((int)axes(0,0), (int)axes(1,0)), cv::Scalar(255,0,0));
   // yaw
-  cv::line(rv, centre, cv::Point(axes(0,1), axes(1,1)), cv::Scalar(0,255,0));
+  cv::line(rv, centre, cv::Point((int)axes(0,1), (int)axes(1,1)), cv::Scalar(0,255,0));
   // roll
-  cv::line(rv, centre, cv::Point(axes(0,2), axes(1,2)), cv::Scalar(0,0,255));
+  cv::line(rv, centre, cv::Point((int)axes(0,2), (int)axes(1,2)), cv::Scalar(0,0,255));
 
   return rv;
 }
@@ -448,7 +449,7 @@ display_data(const Configuration &cfg,
   if (cfg.wait_time == 0)
     std::cout << "Press any key to continue." << std::endl;
 
-  char ch = cv::waitKey(cfg.wait_time * 1000);
+  char ch = cv::waitKey((int) (cfg.wait_time * 1000));
 
   if (ch == 27) // escape
     throw user_pressed_escape();

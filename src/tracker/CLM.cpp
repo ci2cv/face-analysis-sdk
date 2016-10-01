@@ -208,7 +208,7 @@ void CLM::Read(ifstream &s,bool readType)
   int n;
   s >> n;
   
-  _kWidth = 36.;
+  _kWidth = 36;
   _pdm.Read(s);
   _cent.resize(n);
   _visi.resize(n);
@@ -255,7 +255,7 @@ void CLM::ReadBinary(ifstream &s,bool readType)
   }
   int n;
   
-  _kWidth = 36.;
+  _kWidth = 36;
   s.read(reinterpret_cast<char*>(&n), sizeof(n));
   _pdm.ReadBinary(s);
   _cent.resize(n);

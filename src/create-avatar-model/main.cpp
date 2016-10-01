@@ -4,6 +4,7 @@
 #include "avatar/myAvatar.hpp"
 
 #include <opencv2/highgui/highgui.hpp>
+#include <iostream>
 
 void
 print_usage()

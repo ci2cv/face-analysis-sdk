@@ -17,10 +17,11 @@
 
 // Copyright CSIRO 2013
 
-#include <tracker/ATM.hpp>
-#include <opencv/highgui.h>
-#include <opencv/cv.hpp>
 #include <iostream>
+#include <opencv/cv.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <tracker/ATM.hpp>
 #define it at<int>
 #define db at<double>
 using namespace FACETRACKER;
