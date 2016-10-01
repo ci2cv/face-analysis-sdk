@@ -1,4 +1,6 @@
 # -*-cmake-*-
+set(OpenCV_DIR /usr/local/share/OpenCV)
+
 PROJECT(CSIRO-FaceAnalysis-SDK)
 
 cmake_minimum_required(VERSION 2.8)
@@ -65,6 +67,7 @@ SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib")
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 
 # Include directories
+include_directories("/usr/include/")
 INCLUDE_DIRECTORIES("src/")
 INCLUDE_DIRECTORIES("src/avatar/")
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}/src/")
