@@ -36,8 +36,24 @@ SET(MOC_HEADERS
 QT4_WRAP_CPP(MOC_SRCS ${MOC_HEADERS})
 
 INCLUDE_DIRECTORIES(".")
-set_source_files_properties(osx-configuration.mm PROPERTIES COMPILE_FLAGS -ObjC++)
+IF(UNIX AND NOT APPLE)
+  INCLUDE_DIRECTORIES(/usr/local/include/GNUstep /usr/include/GNUstep)
+  EXECUTE_PROCESS(COMMAND gnustep-config --objc-flags
+    OUTPUT_VARIABLE GnuStep_FLAGS
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  EXECUTE_PROCESS(COMMAND gnustep-config --base-libs
+    OUTPUT_VARIABLE GnuStep_LINK_FLAGS
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  STRING(REPLACE "\n" "" GnuStep_FLAGS ${GnuStep_FLAGS})
+  STRING(REPLACE "\n" "" GnuStep_LINK_FLAGS ${GnuStep_LINK_FLAGS})
 
+  SET(GnuStep_LINK_FLAGS "-Wl,--no-as-needed ${GnuStep_LINK_FLAGS}")
+  set_source_files_properties(osx-configuration.mm PROPERTIES
+         COMPILE_FLAGS "${GnuStep_FLAGS}"
+         LINKER_FLAGS "${GnuStep_LINK_FLAGS}")
+ELSE()
+  set_source_files_properties(osx-configuration.mm PROPERTIES COMPILE_FLAGS -ObjC++)
+ENDIF()
 
 add_executable(demo-application
   main.cpp
@@ -65,6 +81,10 @@ ADD_EXECUTABLE(${BundleName} MACOSX_BUNDLE
   ${MOC_SRCS}
   ${EXTRA_SRC}
   )
+IF(UNIX AND NOT APPLE)
+  SET_TARGET_PROPERTIES(${BundleName} PROPERTIES
+    LINK_FLAGS "${GnuStep_LINK_FLAGS}")
+ENDIF()
 TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim ${EXTRA_LIBS})
 
 
