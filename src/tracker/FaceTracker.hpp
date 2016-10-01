@@ -19,6 +19,12 @@
 
 #ifndef _TRACKER_FaceTracker_h_
 #define _TRACKER_FaceTracker_h_
+
+#ifdef _WIN32
+	#include <stdio.h>
+#endif
+
+#include <opencv2/imgproc/imgproc.hpp>
 #include <tracker/IO.hpp>
 namespace FACETRACKER
 {
@@ -54,7 +60,11 @@ namespace FACETRACKER
     void 
     write_fps(cv::Mat &im){ //image to draw FPS on top left corner
       char str[256];
+#ifdef _WIN32
+	  sprintf_s(str, 256, "Tracker: %d fps", (int) round(_fps)); std::string text = str;
+#else
       sprintf(str,"Tracker: %d fps",(int)round(_fps)); std::string text = str;
+#endif
       cv::putText(im,text,cv::Point(10,im.rows-20),
 		  CV_FONT_HERSHEY_SIMPLEX,0.5,CV_RGB(255,255,255)); return;
     }

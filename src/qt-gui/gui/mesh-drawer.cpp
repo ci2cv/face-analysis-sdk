@@ -20,8 +20,8 @@
 #include "gui/mesh-drawer.hpp"
 #include "controllers.hpp"
 
-#include <QtGui/QGraphicsLineItem>
-#include <QtGui/QGraphicsEllipseItem>
+#include <QGraphicsLineItem>
+#include <QGraphicsEllipseItem>
 
 using namespace CI2CVGui;
 

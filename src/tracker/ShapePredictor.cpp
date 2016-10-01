@@ -17,6 +17,7 @@
 
 // Copyright CSIRO 2013
 #include <opencv/cv.hpp> 
+#include <opencv2/imgproc/imgproc.hpp>
 #include <tracker/ShapePredictor.hpp>
 #include <tracker/CLM.hpp>
 #define db at<double>

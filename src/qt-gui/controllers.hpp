@@ -20,8 +20,8 @@
 #ifndef _CI2CV_GUI_GUI_CONTROLLER_HPP_
 #define _CI2CV_GUI_GUI_CONTROLLER_HPP_
 
-#include <QtCore/QObject>
-#include <QtGui/QImage>
+#include <QObject>
+#include <QImage>
 #include <opencv2/core/core.hpp>
 
 namespace CI2CVGui

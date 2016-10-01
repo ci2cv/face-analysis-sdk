@@ -20,13 +20,13 @@
 #ifndef _CI2CV_GUI_GUI_MAIN_WINDOW_HPP_
 #define _CI2CV_GUI_GUI_MAIN_WINDOW_HPP_
 
-#include <QtGui/QMainWindow>
-#include <QtGui/QGraphicsView>
-#include <QtGui/QGraphicsScene>
-#include <QtGui/QPushButton>
-#include <QtGui/QCheckBox>
-#include <QtGui/QLabel>
-#include <QtGui/QProgressBar>
+#include <QMainWindow>
+#include <QGraphicsView>
+#include <QGraphicsScene>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QLabel>
+#include <QProgressBar>
 
 #include "gui/item-controllers.hpp"
 
