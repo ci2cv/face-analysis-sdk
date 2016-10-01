@@ -46,7 +46,11 @@ IF(UNIX AND NOT APPLE)
     OUTPUT_STRIP_TRAILING_WHITESPACE)
   STRING(REPLACE "\n" "" GnuStep_FLAGS ${GnuStep_FLAGS})
   STRING(REPLACE "\n" "" GnuStep_LINK_FLAGS ${GnuStep_LINK_FLAGS})
-  set_source_files_properties(osx-configuration.mm PROPERTIES COMPILE_FLAGS "${GnuStep_FLAGS}")
+
+  SET(GnuStep_LINK_FLAGS "-Wl,--no-as-needed ${GnuStep_LINK_FLAGS}")
+  set_source_files_properties(osx-configuration.mm PROPERTIES
+         COMPILE_FLAGS "${GnuStep_FLAGS}"
+         LINKER_FLAGS "${GnuStep_LINK_FLAGS}")
 ELSE()
   set_source_files_properties(osx-configuration.mm PROPERTIES COMPILE_FLAGS -ObjC++)
 ENDIF()
