@@ -9,6 +9,8 @@ LIBS += \
   -lopencv_core -lopencv_highgui -lopencv_imgproc -lopencv_objdetect -lopencv_video -lobjc \
   -framework Foundation 
 
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 include(qt-gui.pro.local) {
   message("Loading in data from qt-gui.pro.local")
 } else {

@@ -1,11 +1,15 @@
 # -*-cmake-*-
+cmake_policy (SET CMP0020 NEW)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON) # Find includes in corresponding build directories
 set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed
 set(CMAKE_AUTORCC ON) # Instruct CMake to run rcc automatically when needed
 set(CMAKE_AUTOUIC ON) # Instruct CMake to run uic automatically when needed
-find_package(Qt5Widgets)
 
-cmake_policy (SET CMP0020 NEW)
+find_package(Qt5Widgets)
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+# add_definitions(${Qt5Widgets_DEFINITIONS})
+set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
 
 #INCLUDE( ${QT_USE_FILE} )
 
@@ -43,6 +47,8 @@ SET(MOC_HEADERS
 #QT5_WRAP_CPP(MOC_SRCS ${MOC_HEADERS})
 
 INCLUDE_DIRECTORIES(".")
+
+# Non-Apple users get the Foundation librariries from GnuStep
 IF(UNIX AND NOT APPLE)
   INCLUDE_DIRECTORIES(/usr/local/include/GNUstep /usr/include/GNUstep)
   EXECUTE_PROCESS(COMMAND gnustep-config --objc-flags
@@ -76,7 +82,7 @@ add_executable(demo-application ${TARGET_TYPE}
   ${EXTRA_SRC})
 
 set_target_properties(demo-application PROPERTIES DEBUG_POSTFIX "d")  
-target_link_libraries(demo-application ${LIBS} Qt5::Widgets clmTracker avatarAnim utilities ${EXTRA_LIBS})
+target_link_libraries(demo-application ${Qt5Widgets_LIBRARIES} ${LIBS} clmTracker avatarAnim utilities ${EXTRA_LIBS})
 
 install(TARGETS demo-application DESTINATION bin)
 
@@ -103,12 +109,8 @@ IF(UNIX AND NOT APPLE)
     LINK_FLAGS "${GnuStep_LINK_FLAGS}")
 ENDIF()
 
-IF(WIN32)
-  set_target_properties(${BundleName} PROPERTIES DEBUG_POSTFIX "d")
-  TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} Qt5::Widgets clmTracker avatarAnim ${EXTRA_LIBS})
-ELSE()
-  TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim ${EXTRA_LIBS})
-ENDIF()
+set_target_properties(${BundleName} PROPERTIES DEBUG_POSTFIX "d")
+TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} ${Qt5Widgets_LIBRARIES} clmTracker avatarAnim ${EXTRA_LIBS})
 
 install(TARGETS ${BundleName} DESTINATION bin)
 
