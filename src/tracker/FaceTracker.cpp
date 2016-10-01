@@ -16,7 +16,7 @@
 // most directory of the source code.
 
 // Copyright CSIRO 2013
-
+#include <opencv/cv.hpp>
 #include <tracker/IO.hpp>
 #include <tracker/myFaceTracker.hpp>
 #include <tracker/Config.h>

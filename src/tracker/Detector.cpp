@@ -18,7 +18,7 @@
 // Copyright CSIRO 2013
 
 #include <opencv2/core/core.hpp>
-
+#include <opencv/cv.hpp>
 #include "Detector.hpp"
 #include "IO.hpp"
 

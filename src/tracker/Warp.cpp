@@ -17,6 +17,7 @@
 
 // Copyright CSIRO 2013
 
+#include <opencv/cv.hpp> 
 #include <tracker/Warp.hpp>
 #define it at<int>
 #define db at<double>

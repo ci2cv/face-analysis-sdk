@@ -17,6 +17,7 @@
 
 // Copyright CSIRO 2013
 
+#include <opencv/cv.hpp>
 #include <tracker/Patch.hpp>
 #define SGN(x) ((x<0) ? 0:1)
 using namespace FACETRACKER;
