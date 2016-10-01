@@ -57,7 +57,8 @@ add_executable(demo-application ${TARGET_TYPE}
   ${guiFILES}
   ${MOC_SRCS}
   ${EXTRA_SRC})
-    
+
+set_target_properties(demo-application PROPERTIES DEBUG_POSTFIX "d")  
 target_link_libraries(demo-application ${LIBS} Qt5::Widgets clmTracker avatarAnim utilities ${EXTRA_LIBS})
 
 install(TARGETS demo-application DESTINATION bin)
@@ -80,6 +81,7 @@ ADD_EXECUTABLE(${BundleName} ${TARGET_TYPE}
   ${MOC_SRCS}
   ${EXTRA_SRC}
   )
+set_target_properties(${BundleName} PROPERTIES DEBUG_POSTFIX "d")
 TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} Qt5::Widgets clmTracker avatarAnim ${EXTRA_LIBS})
 
 install(TARGETS ${BundleName} DESTINATION bin)

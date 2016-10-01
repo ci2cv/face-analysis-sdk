@@ -15,7 +15,8 @@ else()
 endif()
 
 ADD_LIBRARY(avatarAnim ${LIBTYPE} ${AVATAR_FILES})
+set_target_properties(avatarAnim PROPERTIES DEBUG_POSTFIX "d")
 TARGET_LINK_LIBRARIES(avatarAnim ${LIBS} utilities clmTracker)
 
 install(TARGETS avatarAnim EXPORT CSIRO DESTINATION lib)
-install(FILES Avatar.hpp DESTINATION include)
+install(FILES Avatar.hpp IO.hpp DESTINATION include/avatar)

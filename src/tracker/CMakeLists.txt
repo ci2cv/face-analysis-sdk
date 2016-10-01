@@ -30,7 +30,8 @@ else()
 endif()  
 
 ADD_LIBRARY(clmTracker ${LIBTYPE} ${TRACKER_FILES})
+set_target_properties(clmTracker PROPERTIES DEBUG_POSTFIX "d")
 TARGET_LINK_LIBRARIES(clmTracker ${LIBS})
 
 install(TARGETS clmTracker EXPORT CSIRO DESTINATION lib)
-install(FILES FaceTracker.hpp DESTINATION include)
+install(FILES FaceTracker.hpp IO.hpp DESTINATION include/tracker)
