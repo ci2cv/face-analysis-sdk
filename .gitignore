@@ -17,3 +17,4 @@ config.log
 config.status
 .DS_Store
 *~
+/_build*
