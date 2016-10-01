@@ -10,6 +10,11 @@ if(NOT DEFINED OpenCV_PREFIX)
   set(OpenCV_PREFIX ${CMAKE_INSTALL_PREFIX})
 endif()
 
+if(NOT DEFINED OpenCV_DIR)
+  # Use the default install path for most Linux systems.
+  set(OpenCV_DIR /usr/share/OpenCV/)
+endif()
+
 # Configurable options
 OPTION(WITH_GUI "Build the GUI" OFF)
 
