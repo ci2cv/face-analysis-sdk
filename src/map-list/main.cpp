@@ -17,7 +17,6 @@
 
 // Copyright CSIRO 2013
 
-#include "assert.h"
 #include "utils/helpers.hpp"
 #include "utils/command-line-arguments.hpp"
 #include <iostream>
