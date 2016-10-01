@@ -18,6 +18,7 @@ endif()
 # Configurable options
 OPTION(WITH_GUI "Build the GUI" OFF)
 
+
 # Third party libraries
 find_package(OpenCV REQUIRED core highgui imgproc objdetect
   PATHS ${OpenCV_PREFIX}/lib/cmake/
@@ -25,9 +26,20 @@ find_package(OpenCV REQUIRED core highgui imgproc objdetect
   NO_DEFAULT_PATH) # For some reason CMake uses its defaults before the above paths.
 
 IF(APPLE)
-find_library(FOUNDATION Foundation)
-SET(EXTRA_LIBS ${FOUNDATION})
+  find_library(FOUNDATION Foundation)
+  SET(EXTRA_LIBS ${FOUNDATION})
 ENDIF()
+
+IF(UNIX AND NOT APPLE)
+  FIND_PROGRAM(HAVE_GNUSTEP NAMES gnustep-config)
+  IF(HAVE_GNUSTEP)
+    SET(WITH_GUI "Build the GUI" ON)
+    MESSAGE(STATUS "Found GnuStep")
+  ELSE(HAVE_GNUSTEP)
+    MESSAGE(STATUS "Cannot find GnuStep")
+  ENDIF(HAVE_GNUSTEP)
+ENDIF(UNIX AND NOT APPLE)
+
 
 # Third party programs
 if(NOT DEFINED FFMPEG)
@@ -98,6 +110,9 @@ IF(WITH_GUI)
   SET(CPACK_BINARY_PACKAGEMAKER OFF)
   SET(CPACK_SOURCE_TGZ OFF)
   ADD_SUBDIRECTORY(src/qt-gui)
+  MESSAGE(STATUS "Will build the GUI")
+else()
+  MESSAGE(STATUS "Missing GUI components - will NOT build the GUI")
 endif()
 
 #cpack stuff goes here
