@@ -17,6 +17,7 @@
 
 // Copyright CSIRO 2013
 
+#include <opencv/cv.hpp>
 #include <tracker/RegistrationCheck.hpp>
 using namespace FACETRACKER;
 using namespace std;

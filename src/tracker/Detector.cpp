@@ -18,7 +18,7 @@
 // Copyright CSIRO 2013
 
 #include <opencv2/core/core.hpp>
-
+#include <opencv/cv.hpp>
 #include "Detector.hpp"
 #include "IO.hpp"
 
@@ -136,7 +136,7 @@ Detector::getResponsesForRefShape(cv::Mat r, double *sc_)
     double theta, scale;
     Align2DShapes(sh, _refs_zm, scale, theta);
     if(fabs(theta) > .1){
-      std::cerr << "Reference shapes can only differ in scale" << std::endl;
+      // std::cerr << "Reference shapes can only differ in scale" << std::endl;
       exit(-1);
     }
     if(sc_) *sc_ = scale;
@@ -162,7 +162,7 @@ Detector::getResponsesForRefShape(cv::Size wSize, cv::Mat r)
     double theta, scale;
     Align2DShapes(sh, _refs_zm, scale, theta);
     if(fabs(theta) > .1){
-      std::cerr << "Reference shapes can only differ in scale" << std::endl;
+      // std::cerr << "Reference shapes can only differ in scale" << std::endl;
       exit(-1);
     }
     if(fabs(scale-1.)<1e-2)
@@ -297,8 +297,8 @@ DetectorNCC::Write(std::ofstream &s, bool binary)
 void
 DetectorNCC::Read(std::ifstream &, bool)
 {
-  std::cerr << "Reading DetectorNCC objects from text files is not supported" 
-	    << std::endl;
+  // std::cerr << "Reading DetectorNCC objects from text files is not supported" 
+	    // << std::endl;
   exit(-1);
 }
 

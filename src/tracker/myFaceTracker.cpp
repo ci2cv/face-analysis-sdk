@@ -17,6 +17,7 @@
 
 // Copyright CSIRO 2013
 
+#include <opencv/cv.hpp> 
 #include <tracker/myFaceTracker.hpp>
 #define it at<int>
 #define db at<double>
@@ -444,7 +445,7 @@ myFaceTracker::NewFrame(cv::Mat &im,
     if(p->init_type == 0)
       _clm.Fit(gray_,p->init_wSize,p->itol,p->clamp,p->ftol);
     else{
-      std::cerr << "Bad init_type "<<p->init_type << ". init_type should be 0" << std::endl;
+      // std::cerr << "Bad init_type "<<p->init_type << ". init_type should be 0" << std::endl;
       abort();
     }
     //   myInitData data; data.calculate = true; 

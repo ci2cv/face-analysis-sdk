@@ -31,7 +31,7 @@ namespace FACETRACKER
     cv::Rect _rect;
     FACETRACKER::PDM2D _pdm;
     FACETRACKER::PAW _warp;
-    std::vector<cv::Mat> _C,_R;
+    std::vector<cv::Mat> _CC,_R;
   
     ShapePredictor(){;}
     ShapePredictor(const char* fname, bool binary = false){this->Load(fname, binary);}
