@@ -237,10 +237,10 @@ void IOBinary::ReadMat(std::ifstream &s, cv::Mat &M)
 	s.read((char*)&c, sizeof(int));
 	s.read((char*)&t, sizeof(int));
 	M = cv::Mat(r,c,t);
-	s.read((char*)(M.datastart), M.total() * M.elemSize());
+	s.read(reinterpret_cast<char*>(M.datastart), M.total() * M.elemSize());
 	
 	if(!s.good()){
-	  // std::cout << "Error reading matrix" << std::endl;
+	  std::cout << "Error reading matrix" << std::endl;
 	}
 
 	//	std::cout << "Mat read: "<< r << "x"<<c << ", type " << t << std::endl; 
