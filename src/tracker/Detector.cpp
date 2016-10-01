@@ -197,8 +197,9 @@ Detector::getResponsesForRefShape(cv::Size wSize, cv::Mat r)
       cv::resize(prob_.at(i), m, sz);
       
       if(respRect.x>0 || respRect.y>0){
-	resp.at(i) = cv::Mat::zeros(wSize, m.type());
-	m(probRect).copyTo(resp.at(i)(respRect));
+          resp.at(i) = cv::Mat::zeros(wSize, m.type());
+          cv::Mat tmp = resp.at(i)(respRect);
+          m(probRect).copyTo(tmp);
       }
       else
 	resp.at(i) = m(probRect);
