@@ -20,7 +20,7 @@
 #ifndef _CI2CV_GUI_CONFIGURATION_HPP_
 #define _CI2CV_GUI_CONFIGURATION_HPP_
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace CI2CVGui {
 

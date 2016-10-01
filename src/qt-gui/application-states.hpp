@@ -20,7 +20,7 @@
 #ifndef _QT_GUI_APPLICATION_STATES_HPP_
 #define _QT_GUI_APPLICATION_STATES_HPP_
 
-#include <QtCore/QState>
+#include <QState>
 
 namespace CI2CVGui 
 {	

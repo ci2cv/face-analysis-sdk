@@ -8,5 +8,15 @@ CONFIGURE_FILE("Config.h.in" "Config.h")
 
 SET(AVATAR_FILES "Avatar.cpp" "myAvatar.cpp")
 
-ADD_LIBRARY(avatarAnim SHARED ${AVATAR_FILES})
+if(WIN32)
+    set(LIBTYPE STATIC)
+else()
+    set(LIBTYPE SHARED)
+endif()
+
+ADD_LIBRARY(avatarAnim ${LIBTYPE} ${AVATAR_FILES})
+set_target_properties(avatarAnim PROPERTIES DEBUG_POSTFIX "d")
 TARGET_LINK_LIBRARIES(avatarAnim ${LIBS} utilities clmTracker)
+
+install(TARGETS avatarAnim EXPORT CSIRO DESTINATION lib)
+install(FILES Avatar.hpp IO.hpp DESTINATION include/avatar)

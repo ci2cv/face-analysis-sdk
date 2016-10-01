@@ -16,7 +16,8 @@
 // most directory of the source code.
 
 // Copyright CSIRO 2013
-
+#include <opencv/cv.hpp> 
+#include <opencv2/imgproc/imgproc.hpp>
 #include <tracker/ShapePredictor.hpp>
 #include <tracker/CLM.hpp>
 #define db at<double>
@@ -31,9 +32,9 @@ ShapePredictor& ShapePredictor::operator= (ShapePredictor const&rhs)
   _rect = rhs._rect;
   _pdm = rhs._pdm;
   _warp = rhs._warp;
-  _C.resize(_K); _R.resize(_K);
+  _CC.resize(_K); _R.resize(_K);
   for(int i = 0; i < _K; i++){
-    _C[i] = rhs._C[i].clone();
+    _CC[i] = rhs._CC[i].clone();
     _R[i] = rhs._R[i].clone();
   }
   x_.create(_warp._nPix+1,1,CV_64F);
@@ -66,9 +67,9 @@ void ShapePredictor::Save(const char* fname, bool binary)
 //==============================================================================
 void ShapePredictor::Read(ifstream &s)
 {
-  s >> _K; _C.resize(_K); _R.resize(_K);
+  s >> _K; _CC.resize(_K); _R.resize(_K);
   for(int i = 0; i < _K; i++){
-    FACETRACKER::IO::ReadMat(s,_C[i]);
+    FACETRACKER::IO::ReadMat(s,_CC[i]);
     FACETRACKER::IO::ReadMat(s,_R[i]);
   }
   FACETRACKER::IO::ReadMat(s,_idx);
@@ -91,9 +92,9 @@ void ShapePredictor::ReadBinary(ifstream &s, bool readType)
   }
   
   s.read(reinterpret_cast<char*>(&_K), sizeof(_K));
-  _C.resize(_K); _R.resize(_K);
+  _CC.resize(_K); _R.resize(_K);
   for(int i = 0; i < _K; i++){
-    FACETRACKER::IOBinary::ReadMat(s,_C[i]);
+    FACETRACKER::IOBinary::ReadMat(s,_CC[i]);
     FACETRACKER::IOBinary::ReadMat(s,_R[i]);
   }
   FACETRACKER::IOBinary::ReadMat(s,_idx);
@@ -112,7 +113,7 @@ void ShapePredictor::Write(ofstream &s, bool binary)
   if(!binary){
     s << _K << " ";
     for(int i = 0; i < _K; i++){
-      FACETRACKER::IO::WriteMat(s,_C[i]);
+      FACETRACKER::IO::WriteMat(s,_CC[i]);
       FACETRACKER::IO::WriteMat(s,_R[i]);
     }
     FACETRACKER::IO::WriteMat(s,_idx);
@@ -125,7 +126,7 @@ void ShapePredictor::Write(ofstream &s, bool binary)
     s.write(reinterpret_cast<char*>(&t), sizeof(t));
     s.write(reinterpret_cast<char*>(&_K), sizeof(_K));
     for(int i = 0; i < _K; i++){
-      FACETRACKER::IOBinary::WriteMat(s,_C[i]);
+      FACETRACKER::IOBinary::WriteMat(s,_CC[i]);
       FACETRACKER::IOBinary::WriteMat(s,_R[i]);
     }
     FACETRACKER::IOBinary::WriteMat(s,_idx);
@@ -162,11 +163,11 @@ int ShapePredictor::FindCluster(cv::Mat &shape)
   }
   double a1,b1,tx1,ty1,a2,b2,tx2,ty2,v,vmin = 0; int l = -1; cv::Mat S;
   for(int k = 0; k < _K; k++){
-    FACETRACKER::CalcSimT(_C[k],z_,a1,b1,tx1,ty1);
+    FACETRACKER::CalcSimT(_CC[k],z_,a1,b1,tx1,ty1);
     FACETRACKER::invSimT(a1,b1,tx1,ty1,a2,b2,tx2,ty2);
     z_.copyTo(y_);
     FACETRACKER::SimT(y_,a2,b2,tx2,ty2); 
-    v = cv::norm(y_,_C[k]);
+    v = cv::norm(y_,_CC[k]);
     if((v < vmin) || (l < 0)){vmin = v; l = k;}
   }return l;
 }

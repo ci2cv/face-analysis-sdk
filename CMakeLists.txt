@@ -5,24 +5,28 @@ cmake_minimum_required(VERSION 2.8)
 
 #set(CMAKE_VERBOSE_MAKEFILE true)
 
-# Default values for options
-if(NOT DEFINED OpenCV_PREFIX)
-  set(OpenCV_PREFIX ${CMAKE_INSTALL_PREFIX})
-endif()
-
 # Configurable options
 OPTION(WITH_GUI "Build the GUI" OFF)
 
+
 # Third party libraries
-find_package(OpenCV REQUIRED core highgui imgproc objdetect
-  PATHS ${OpenCV_PREFIX}/lib/cmake/
-        ${OpenCV_PREFIX}/share/OpenCV/
-  NO_DEFAULT_PATH) # For some reason CMake uses its defaults before the above paths.
+find_package(OpenCV REQUIRED core highgui imgproc objdetect)
 
 IF(APPLE)
-find_library(FOUNDATION Foundation)
-SET(EXTRA_LIBS ${FOUNDATION})
+  find_library(FOUNDATION Foundation)
+  SET(EXTRA_LIBS ${FOUNDATION})
 ENDIF()
+
+IF(UNIX AND NOT APPLE)
+  FIND_PROGRAM(HAVE_GNUSTEP NAMES gnustep-config)
+  IF(HAVE_GNUSTEP)
+    SET(WITH_GUI "Build the GUI" ON)
+    MESSAGE(STATUS "Found GnuStep")
+  ELSE(HAVE_GNUSTEP)
+    MESSAGE(STATUS "Cannot find GnuStep")
+  ENDIF(HAVE_GNUSTEP)
+ENDIF(UNIX AND NOT APPLE)
+
 
 # Third party programs
 if(NOT DEFINED FFMPEG)
@@ -46,23 +50,28 @@ endif()
 SET(CMAKE_BUILD_TYPE Release CACHE STRING "")
 
 # - flags
-SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g -O0  -Wall -Wextra -DDEBUG")
-SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O0 -g  -Wall -Wextra -DDEBUG")
+if(NOT WIN32)
+    SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS} -g -O0  -Wall -Wextra -DDEBUG")
+    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -O0 -g  -Wall -Wextra -DDEBUG")
 
-SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -O3  -Wall -Wextra")
-SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -Wall -O3  -Wextra")
+    SET(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} -O3  -Wall -Wextra")
+    SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -Wall -O3  -Wextra")
+endif()
 
 SET(LIBS ${OpenCV_LIBS} ${EXTRA_LIBS})
+INCLUDE_DIRECTORIES(${OpenCV_INCLUDE_DIRS})
 
 # Build paths
 SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib")
-#SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib")
+SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/lib")
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 
 # Include directories
 INCLUDE_DIRECTORIES("src/")
 INCLUDE_DIRECTORIES("src/avatar/")
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}/src/")
+INCLUDE_DIRECTORIES(OpenCV_INCLUDE_DIRS)
+
 
 # Subdirectories with CMakeLists.txt
 ADD_SUBDIRECTORY(src/utils)
@@ -79,6 +88,9 @@ ADD_SUBDIRECTORY(src/display-tracking)
 ADD_SUBDIRECTORY(src/create-avatar-model)
 ADD_SUBDIRECTORY(src/display-3d-points)
 
+# install(EXPORT CSIRO DESTINATION ${CMAKE_INSTALL_PREFIX})
+install(FILES src/CSIROConfig.cmake DESTINATION "${CMAKE_INSTALL_PREFIX}")
+
 IF(WITH_GUI)
   SET(CPACK_PACKAGE_NAME "clm")
   SET(CPACK_PACKAGE_VENDOR "CI2CV-CSIRO ci2cv.net")
@@ -91,7 +103,9 @@ IF(WITH_GUI)
   SET(CPACK_BINARY_PACKAGEMAKER OFF)
   SET(CPACK_SOURCE_TGZ OFF)
   ADD_SUBDIRECTORY(src/qt-gui)
+  MESSAGE(STATUS "Will build the GUI")
+else()
+  MESSAGE(STATUS "Missing GUI components - will NOT build the GUI")
 endif()
 
 #cpack stuff goes here
-

@@ -17,11 +17,12 @@
 
 // Copyright CSIRO 2013
 
+#include <iostream>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include "utils/helpers.hpp"
 #include "utils/command-line-arguments.hpp"
 #include "utils/points.hpp"
-#include <iostream>
-#include <opencv2/highgui/highgui.hpp>
 
 void
 print_usage()
@@ -98,7 +99,7 @@ run_program(int argc, char **argv)
     cv::imwrite(output_pathname->c_str(), img);
   } else {
     cv::imshow("Image", img);
-    cv::waitKey(1000*wait_time);
+    cv::waitKey((int) (1000*wait_time));
   }
   
   return 0;

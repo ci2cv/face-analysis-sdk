@@ -1,7 +1,17 @@
 # -*-cmake-*-
-find_package(Qt4 REQUIRED)
+cmake_policy (SET CMP0020 NEW)
 
-INCLUDE( ${QT_USE_FILE} )
+set(CMAKE_INCLUDE_CURRENT_DIR ON) # Find includes in corresponding build directories
+set(CMAKE_AUTOMOC ON) # Instruct CMake to run moc automatically when needed
+set(CMAKE_AUTORCC ON) # Instruct CMake to run rcc automatically when needed
+set(CMAKE_AUTOUIC ON) # Instruct CMake to run uic automatically when needed
+
+find_package(Qt5Widgets)
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+# add_definitions(${Qt5Widgets_DEFINITIONS})
+set(CMAKE_CXX_FLAGS "${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
+
+#INCLUDE( ${QT_USE_FILE} )
 
 #set(CMAKE_VERBOSE_MAKEFILE true)
 
@@ -9,6 +19,7 @@ SET(BundleName "qt-gui")
 
 SET(guiFILES "application-states.cpp"
   "controllers.cpp"
+  "command-line-configuration.cpp"
   "configuration.cpp"
   "gui/avatar-selection.cpp"
   "gui/main-window.cpp"
@@ -33,19 +44,47 @@ SET(MOC_HEADERS
   "gui/worker-thread.hpp")
 #  "gui/item-positions-calculator.hpp")
 
-QT4_WRAP_CPP(MOC_SRCS ${MOC_HEADERS})
+#QT5_WRAP_CPP(MOC_SRCS ${MOC_HEADERS})
 
 INCLUDE_DIRECTORIES(".")
-set_source_files_properties(osx-configuration.mm PROPERTIES COMPILE_FLAGS -ObjC++)
 
+# Non-Apple users get the Foundation librariries from GnuStep
+IF(UNIX AND NOT APPLE)
+  INCLUDE_DIRECTORIES(/usr/local/include/GNUstep /usr/include/GNUstep)
+  EXECUTE_PROCESS(COMMAND gnustep-config --objc-flags
+    OUTPUT_VARIABLE GnuStep_FLAGS
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  EXECUTE_PROCESS(COMMAND gnustep-config --base-libs
+    OUTPUT_VARIABLE GnuStep_LINK_FLAGS
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  STRING(REPLACE "\n" "" GnuStep_FLAGS ${GnuStep_FLAGS})
+  STRING(REPLACE "\n" "" GnuStep_LINK_FLAGS ${GnuStep_LINK_FLAGS})
 
-add_executable(demo-application
+  SET(GnuStep_LINK_FLAGS "-Wl,--no-as-needed ${GnuStep_LINK_FLAGS}")
+  set_source_files_properties(osx-configuration.mm PROPERTIES
+         COMPILE_FLAGS "${GnuStep_FLAGS}"
+         LINKER_FLAGS "${GnuStep_LINK_FLAGS}")
+ELSE()
+  set_source_files_properties(osx-configuration.mm PROPERTIES COMPILE_FLAGS -ObjC++)
+ENDIF()
+
+if(WIN32)
+    set(TARGET_TYPE WIN32)
+elseif(APPLE)
+    set(TARGET_TYPE MACOSX_BUNDLE)
+endif()
+
+add_executable(demo-application ${TARGET_TYPE}
   main.cpp
   command-line-configuration.cpp
   ${guiFILES}
   ${MOC_SRCS}
   ${EXTRA_SRC})
-target_link_libraries(demo-application ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim utilities ${EXTRA_LIBS})
+
+set_target_properties(demo-application PROPERTIES DEBUG_POSTFIX "d")  
+target_link_libraries(demo-application ${Qt5Widgets_LIBRARIES} ${LIBS} clmTracker avatarAnim utilities ${EXTRA_LIBS})
+
+install(TARGETS demo-application DESTINATION bin)
 
 # Apple Specific Targets
 
@@ -54,19 +93,26 @@ IF(APPLE)
   set_source_files_properties(${CMAKE_CURRENT_SOURCE_DIR}/Configuration.plist PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
   
   SET(EXTRA_SRC "Configuration.plist")
+  SET(CONFIG_SRC "osx-configuration.mm")
 
 ENDIF()
 
-
-ADD_EXECUTABLE(${BundleName} MACOSX_BUNDLE 
+ADD_EXECUTABLE(${BundleName} ${TARGET_TYPE} 
   main.cpp 
-  osx-configuration.mm
+  ${CONFIG_SRC}
   ${guiFILES} 
   ${MOC_SRCS}
   ${EXTRA_SRC}
   )
-TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim ${EXTRA_LIBS})
+IF(UNIX AND NOT APPLE)
+  SET_TARGET_PROPERTIES(${BundleName} PROPERTIES
+    LINK_FLAGS "${GnuStep_LINK_FLAGS}")
+ENDIF()
 
+set_target_properties(${BundleName} PROPERTIES DEBUG_POSTFIX "d")
+TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} ${Qt5Widgets_LIBRARIES} clmTracker avatarAnim ${EXTRA_LIBS})
+
+install(TARGETS ${BundleName} DESTINATION bin)
 
 # IF(APPLE)
 
@@ -88,7 +134,7 @@ IF(APPLE)
     BUNDLE DESTINATION . COMPONENT Runtime
     RUNTIME DESTINATION bin COMPONENT Runtime
     )
-  
+ 
   FILE(GLOB trackerFiles "${CMAKE_CURRENT_SOURCE_DIR}/../tracker/resources/*")
   FILE(GLOB avatarFiles "${CMAKE_CURRENT_SOURCE_DIR}/../avatar/resources/*")
 

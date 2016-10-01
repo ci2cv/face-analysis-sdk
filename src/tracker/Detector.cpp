@@ -17,7 +17,11 @@
 
 // Copyright CSIRO 2013
 
+#include <iostream>
+
+#include <opencv/cv.hpp>
 #include <opencv2/core/core.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 #include "Detector.hpp"
 #include "IO.hpp"
@@ -105,7 +109,7 @@ Detector::getResponsesForRefShape(double scale)
   if(scale == 1.)
     return prob_;
   else{    
-    cv::Size sz (prob_.at(0).cols / scale, prob_.at(0).rows/scale);
+    cv::Size sz ((int) (prob_.at(0).cols / scale), (int) (prob_.at(0).rows/scale));
 
     bool t = false;
     if(sz.width%2==0){ sz.width++; t = true;}
@@ -171,7 +175,7 @@ Detector::getResponsesForRefShape(cv::Size wSize, cv::Mat r)
     cv::Size sz;
     for (size_t i=0; i<prob_.size(); i++) {
       if(!prob_.at(i).empty()){
-	sz = cv::Size(prob_.at(i).cols / scale, prob_.at(i).rows/scale);
+	sz = cv::Size((int) (prob_.at(i).cols / scale), (int) (prob_.at(i).rows/scale));
 	break;
       }
     }
@@ -197,8 +201,9 @@ Detector::getResponsesForRefShape(cv::Size wSize, cv::Mat r)
       cv::resize(prob_.at(i), m, sz);
       
       if(respRect.x>0 || respRect.y>0){
-	resp.at(i) = cv::Mat::zeros(wSize, m.type());
-	m(probRect).copyTo(resp.at(i)(respRect));
+          resp.at(i) = cv::Mat::zeros(wSize, m.type());
+          cv::Mat tmp = resp.at(i)(respRect);
+          m(probRect).copyTo(tmp);
       }
       else
 	resp.at(i) = m(probRect);

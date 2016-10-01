@@ -17,6 +17,8 @@
 
 // Copyright CSIRO 2013
 
+#include <opencv/cv.hpp> 
+#include <opencv2/imgproc/imgproc.hpp>
 #include <tracker/Warp.hpp>
 #define it at<int>
 #define db at<double>
@@ -58,6 +60,14 @@ double FACETRACKER::bilinInterp(cv::Mat& I,const double x,const double y)
   if(x < 0 || x >= I.cols || y < 0 || y >= I.rows)return 0;
   int x1 = (int)std::floor(x),y1 = (int)std::floor(y);
   int x2 = (int)std::ceil(x) ,y2 = (int)std::ceil(y);
+
+  // This check avoids an assertion (in DEBUG) or crash (in RELEASE) if the ceiling
+  // in x2/y2 exceeds the size of the image
+  if (x2 >= I.cols)
+	  x2 = I.cols - 1;
+  if (y2 >= I.rows)
+	  y2 = I.rows - 1;
+
   if(x1 == x2){
     if(y1 == y2)return (double)I.at<uchar>(y1,x1);
     else return (double(y2)-y)*I.at<uchar>(y1,x1) + 
