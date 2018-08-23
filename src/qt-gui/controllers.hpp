@@ -21,7 +21,7 @@
 #define _CI2CV_GUI_GUI_CONTROLLER_HPP_
 
 #include <QtCore/QObject>
-#include <QtGui/QImage>
+#include <QImage>
 #include <opencv2/core/core.hpp>
 
 namespace CI2CVGui

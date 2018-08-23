@@ -21,7 +21,7 @@
 #include "utils/command-line-arguments.hpp"
 #include "utils/points.hpp"
 #include <iostream>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/opencv.hpp>
 
 void
 print_usage()

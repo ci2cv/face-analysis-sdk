@@ -20,7 +20,7 @@
 #ifndef _CI2CV_GUI_GUI_MESH_DRAWER_HPP_
 #define _CI2CV_GUI_GUI_MESH_DRAWER_HPP_
 
-#include <QtGui/QGraphicsItemGroup>
+#include <QGraphicsItemGroup>
 #include <QtGui/QColor>
 #include <QtGui/QBrush>
 #include <QtGui/QPen>

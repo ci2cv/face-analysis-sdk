@@ -22,6 +22,7 @@
 #include <tracker/ShapeModel.hpp>
 #include <tracker/Patch.hpp>
 #include <tracker/Detector.hpp>
+#include <opencv2/opencv.hpp>
 #include <vector>
 namespace FACETRACKER
 {

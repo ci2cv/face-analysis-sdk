@@ -24,12 +24,12 @@
 #include "gui/mesh-drawer.hpp"
 #include "configuration.hpp"
 
-#include <QtGui/QStyle>
+#include <QStyle>
 #include <QtGui/QFont>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QApplication>
-#include <QtCore/QDebug>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QApplication>
+#include <QDebug>
 
 using namespace CI2CVGui;
 

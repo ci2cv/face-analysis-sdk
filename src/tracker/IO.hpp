@@ -22,6 +22,7 @@
 #include <opencv/cv.h>
 #include <fstream>
 #include <vector>
+#include <opencv2/opencv.hpp>
 namespace FACETRACKER
 {
   //===========================================================================

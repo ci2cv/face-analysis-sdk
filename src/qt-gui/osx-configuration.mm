@@ -22,7 +22,7 @@
 #include <Foundation/NSPathUtilities.h>
 #include <Foundation/NSAutoreleasePool.h>
 #include <Foundation/NSDictionary.h>
-#include <QtCore/QDebug>
+#include <QDebug>
 
 #include "osx-configuration.hpp"
 

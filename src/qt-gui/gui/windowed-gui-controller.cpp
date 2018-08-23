@@ -19,7 +19,7 @@
 
 #include "gui/windowed-gui-controller.hpp"
 
-#include <QtCore/QDebug>
+#include <QDebug>
 #include <stdexcept>
 #include "gui/worker-thread.hpp"
 #include "configuration.hpp"

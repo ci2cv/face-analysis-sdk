@@ -20,6 +20,7 @@
 #ifndef _TRACKER_FDet_h_
 #define _TRACKER_FDet_h_
 #include <tracker/IO.hpp>
+#include <opencv2/opencv.hpp>
 namespace FACETRACKER
 {
   //===========================================================================
