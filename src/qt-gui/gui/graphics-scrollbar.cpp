@@ -19,8 +19,8 @@
 
 #include "gui/graphics-scrollbar.hpp"
 #include <QtGui/QPainterPath>
-#include <QtCore/QDebug>
-#include <QtGui/QGraphicsSceneMouseEvent>
+#include <QDebug>
+#include <QGraphicsSceneMouseEvent>
 
 using namespace CI2CVGui;
 

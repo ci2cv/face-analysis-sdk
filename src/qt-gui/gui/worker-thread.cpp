@@ -20,7 +20,7 @@
 #include "gui/worker-thread.hpp"
 
 #include <opencv/highgui.h>
-#include <QtCore/QDebug>
+#include <QDebug>
 #include <stdexcept>
 #include <numeric>
 

@@ -20,7 +20,7 @@
 #include "gui/avatar.hpp"
 
 #include <stdexcept>
-#include <QtCore/QDebug>
+#include <QDebug>
 #include "gui/worker-thread.hpp"
 #include "configuration.hpp"
 

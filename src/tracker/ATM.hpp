@@ -21,6 +21,7 @@
 #define _TRACKER_ATM_h_
 #include <tracker/ShapeModel.hpp>
 #include <tracker/Warp.hpp>
+#include <opencv2/opencv.hpp>
 #include <vector>
 namespace FACETRACKER
 {

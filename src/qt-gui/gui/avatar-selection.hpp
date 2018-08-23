@@ -22,7 +22,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QRectF>
-#include <QtGui/QGraphicsItemGroup>
+#include <QGraphicsItemGroup>
 #include <QtCore/QScopedArrayPointer>
 
 #include "gui/graphics-scrollbar.hpp"

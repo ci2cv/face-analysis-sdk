@@ -26,6 +26,7 @@
 #include <tracker/RegistrationCheck.hpp>
 #include <tracker/FaceTracker.hpp>
 #include <tracker/ShapePredictor.hpp>
+#include <opencv2/opencv.hpp>
 namespace FACETRACKER
 {
   //============================================================================

@@ -25,9 +25,9 @@
 
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
-#include <QtCore/QThread>
-#include <QtGui/QImage>
-#include <QtCore/QTimer>
+#include <QThread>
+#include <QImage>
+#include <QTimer>
 
 namespace CI2CVGui {
 	class WorkerThreadCameraController : public CameraController

@@ -21,6 +21,7 @@
 #define _TRACKER_ShapePredictor_h_
 #include <tracker/ShapeModel.hpp>
 #include <tracker/Warp.hpp>
+#include <opencv2/opencv.hpp>
 namespace FACETRACKER
 {  
   //===========================================================================

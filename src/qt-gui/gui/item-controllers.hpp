@@ -21,8 +21,8 @@
 #define _CI2CV_GUI_GUI_ITEM_POSITIONERS_HPP_
 
 #include <QtCore/QObject>
-#include <QtGui/QGraphicsRectItem>
-#include <QtGui/QGraphicsPixmapItem>
+#include <QGraphicsRectItem>
+#include <QGraphicsPixmapItem>
 
 #include <opencv2/core/core.hpp>
 

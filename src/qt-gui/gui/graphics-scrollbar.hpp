@@ -22,7 +22,7 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QRectF>
-#include <QtGui/QGraphicsItemGroup>
+#include <QGraphicsItemGroup>
 #include <QtGui/QBrush>
 #include <QtGui/QPen>
 

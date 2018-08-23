@@ -296,7 +296,7 @@ run_video_mode(const Configuration &cfg,
     }
 
     cv::Mat_<uint8_t> gray_image;
-    if (image.type() == cv::DataType<cv::Vec<uint8_t,3> >::type)
+    if (image.type() == CV_8UC3)
       cv::cvtColor(image, gray_image, CV_BGR2GRAY);
     else if (image.type() == cv::DataType<uint8_t>::type)
       gray_image = image;
@@ -414,13 +414,13 @@ display_data(const Configuration &cfg,
   cv::Scalar colour;
   if (image.type() == cv::DataType<uint8_t>::type)
     colour = cv::Scalar(255);
-  else if (image.type() == cv::DataType<cv::Vec<uint8_t,3> >::type)
+  else if (image.type() == CV_8UC3)
     colour = cv::Scalar(0,0,255);
   else
     colour = cv::Scalar(255);
 
   cv::Mat displayed_image;
-  if (image.type() == cv::DataType<cv::Vec<uint8_t,3> >::type)
+  if (image.type() == CV_8UC3)
     displayed_image = image.clone();
   else if (image.type() == cv::DataType<uint8_t>::type)
     cv::cvtColor(image, displayed_image, CV_GRAY2BGR);

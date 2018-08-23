@@ -1,7 +1,7 @@
 # -*-cmake-*-
 PROJECT(CSIRO-FaceAnalysis-SDK)
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1.0)
 
 #set(CMAKE_VERBOSE_MAKEFILE true)
 
@@ -13,11 +13,17 @@ endif()
 # Configurable options
 OPTION(WITH_GUI "Build the GUI" OFF)
 
-# Third party libraries
-find_package(OpenCV REQUIRED core highgui imgproc objdetect
-  PATHS ${OpenCV_PREFIX}/lib/cmake/
-        ${OpenCV_PREFIX}/share/OpenCV/
-  NO_DEFAULT_PATH) # For some reason CMake uses its defaults before the above paths.
+# # Third party libraries
+# find_package(OpenCV REQUIRED core highgui imgproc objdetect
+#   PATHS ${OpenCV_PREFIX}/lib/cmake/
+#         ${OpenCV_PREFIX}/share/OpenCV/
+#   NO_DEFAULT_PATH) # For some reason CMake uses its defaults before the above paths.
+
+# opencv
+set(OpenCV_DIR "" CACHE PATH "OpenCV root directory")
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
+# message("OpenCV_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
 
 IF(APPLE)
 find_library(FOUNDATION Foundation)

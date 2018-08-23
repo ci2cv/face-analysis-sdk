@@ -20,6 +20,7 @@
 #ifndef _TRACKER_RegistrationCheck_h_
 #define _TRACKER_RegistrationCheck_h_
 #include <tracker/Warp.hpp>
+#include <opencv2/opencv.hpp>
 #include <vector>
 namespace FACETRACKER
 {

@@ -20,7 +20,7 @@
 #include "gui/item-positions-calculator.hpp"
 #include "gui/windowed-gui-controller.hpp"
 
-#include <QtCore/QDebug>
+#include <QDebug>
 
 using namespace CI2CVGui;
 

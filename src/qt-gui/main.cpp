@@ -18,9 +18,9 @@
 // Copyright CSIRO 2013
 
 #include <QtCore/QObject>
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <QtCore/QStateMachine>
-#include <QtCore/QDebug>
+#include <QDebug>
 
 #include <stdexcept>
 #include <iostream>

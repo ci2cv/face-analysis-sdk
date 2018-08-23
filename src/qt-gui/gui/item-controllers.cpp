@@ -19,7 +19,7 @@
 
 #include "gui/item-controllers.hpp"
 #include <QtCore/QPropertyAnimation>
-#include <QtCore/QDebug>
+#include <QDebug>
 #include "gui/avatar-selection.hpp"
 #include "gui/mesh-drawer.hpp"
 #include "controllers.hpp"

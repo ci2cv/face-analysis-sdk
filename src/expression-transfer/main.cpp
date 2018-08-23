@@ -209,7 +209,7 @@ run_program(int argc, char **argv)
   
     if (image_exists_p && landmarks_exists_p) {
       cv::Mat image_unknown = cv::imread(image_it->c_str());
-      if (image_unknown.type() != cv::DataType<cv::Vec<uint8_t,3> >::type)	
+      if (image_unknown.type() != CV_8UC3)	
 	throw make_runtime_error("This program only knows draw on 3 channel colour images. The file '%s' just doesn't satisfy this requirement. Sorry.", image_it->c_str());
 
       cv::Mat_<cv::Vec<uint8_t,3> > image  = image_unknown;

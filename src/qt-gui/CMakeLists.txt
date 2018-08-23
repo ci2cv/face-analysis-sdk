@@ -1,39 +1,86 @@
 # -*-cmake-*-
-find_package(Qt4 REQUIRED)
+# find_package(Qt4 REQUIRED)
 
-INCLUDE( ${QT_USE_FILE} )
+# INCLUDE( ${QT_USE_FILE} )
+
+# qt
+set(QTDIR "" CACHE PATH "Qt5 directory")
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${QTDIR})
+find_package(Qt5Widgets CONFIG REQUIRED)
+include_directories(${Qt5Widgets_INCLUDE_DIRS})
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
+
+# opencv
+set(OpenCV_DIR "" CACHE PATH "OpenCV root directory")
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
+# message("OpenCV_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
 
 #set(CMAKE_VERBOSE_MAKEFILE true)
 
 SET(BundleName "qt-gui")
 
-SET(guiFILES "application-states.cpp"
-  "controllers.cpp"
-  "configuration.cpp"
-  "gui/avatar-selection.cpp"
-  "gui/main-window.cpp"
-  "gui/avatar.cpp"
-  "gui/mesh-drawer.cpp"
-  "gui/graphics-scrollbar.cpp"
-  "gui/windowed-gui-controller.cpp"
-  "gui/item-controllers.cpp"
-  "gui/worker-thread.cpp"
-  "gui/item-positions-calculator.cpp"
+SET(guiFILES 
+  # "application-states.cpp"
+  # "controllers.cpp"
+  # "configuration.cpp"
+  # "gui/avatar-selection.cpp"
+  # "gui/main-window.cpp"
+  # "gui/avatar.cpp"
+  # "gui/mesh-drawer.cpp"
+  # "gui/graphics-scrollbar.cpp"
+  # "gui/windowed-gui-controller.cpp"
+  # "gui/item-controllers.cpp"
+  # "gui/worker-thread.cpp"
+  # "gui/item-positions-calculator.cpp"
+
+  application-states.cpp
+  controllers.cpp
+  configuration.cpp
+  gui/main-window.cpp
+  gui/windowed-gui-controller.cpp
+  gui/item-controllers.cpp
+  gui/item-positions-calculator.cpp
+  gui/graphics-scrollbar.cpp
+  gui/avatar-selection.cpp
+  gui/avatar.cpp
+  gui/worker-thread.cpp
+  gui/mesh-drawer.cpp
+
+  ../tracker/IO.cpp
+  ../tracker/CLM.cpp
+  ../tracker/FDet.cpp
+  ../tracker/Patch.cpp
+  ../tracker/ShapeModel.cpp
+  # ../tracker/PRA.cpp
+  # ../tracker/FacePredictor.cpp
+  ../tracker/ShapePredictor.cpp
+  ../tracker/ATM.cpp
+  ../tracker/Warp.cpp
+  ../tracker/FCheck.cpp
+  ../tracker/FaceTracker.cpp
+  ../tracker/myFaceTracker.cpp
+  ../tracker/RegistrationCheck.cpp
+  ../avatar/Avatar.cpp
+  ../avatar/myAvatar.cpp
 )
 
-SET(MOC_HEADERS
-  "controllers.hpp"
-  "gui/avatar-selection.hpp"
-  "gui/main-window.hpp"
-  "gui/avatar.hpp"
-#  "gui/mesh-drawer.hpp"
-  "gui/graphics-scrollbar.hpp"
-  "gui/windowed-gui-controller.hpp"
-  "gui/item-controllers.hpp"
-  "gui/worker-thread.hpp")
-#  "gui/item-positions-calculator.hpp")
+# SET(MOC_HEADERS
+#   "controllers.hpp"
+#   "gui/avatar-selection.hpp"
+#   "gui/main-window.hpp"
+#   "gui/avatar.hpp"
+# #  "gui/mesh-drawer.hpp"
+#   "gui/graphics-scrollbar.hpp"
+#   "gui/windowed-gui-controller.hpp"
+#   "gui/item-controllers.hpp"
+#   "gui/worker-thread.hpp")
+# #  "gui/item-positions-calculator.hpp")
 
-QT4_WRAP_CPP(MOC_SRCS ${MOC_HEADERS})
+# QT4_WRAP_CPP(MOC_SRCS ${MOC_HEADERS})
 
 INCLUDE_DIRECTORIES(".")
 set_source_files_properties(osx-configuration.mm PROPERTIES COMPILE_FLAGS -ObjC++)
@@ -45,7 +92,10 @@ add_executable(demo-application
   ${guiFILES}
   ${MOC_SRCS}
   ${EXTRA_SRC})
-target_link_libraries(demo-application ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim utilities ${EXTRA_LIBS})
+target_link_libraries(demo-application ${LIBS} 
+  # ${QT_LIBRARIES} 
+  Qt5::Widgets
+  clmTracker avatarAnim utilities ${EXTRA_LIBS})
 
 # Apple Specific Targets
 
@@ -65,7 +115,10 @@ ADD_EXECUTABLE(${BundleName} MACOSX_BUNDLE
   ${MOC_SRCS}
   ${EXTRA_SRC}
   )
-TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} ${QT_LIBRARIES} clmTracker avatarAnim ${EXTRA_LIBS})
+TARGET_LINK_LIBRARIES(${BundleName} ${LIBS} 
+  # ${QT_LIBRARIES} 
+  Qt5::Widgets
+  clmTracker avatarAnim ${EXTRA_LIBS})
 
 
 # IF(APPLE)

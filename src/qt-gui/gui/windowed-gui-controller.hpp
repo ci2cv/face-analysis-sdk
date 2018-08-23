@@ -20,11 +20,11 @@
 #ifndef _CI2CV_GUI_GUI_WINDOWED_GUI_CONTROLLER_HPP_
 #define _CI2CV_GUI_GUI_WINDOWED_GUI_CONTROLLER_HPP_
 
-#include <QtGui/QWidget>
-#include <QtGui/QAbstractButton>
-#include <QtCore/QTimer>
-#include <QtGui/QLabel>
-#include <QtGui/QProgressBar>
+#include <QWidget>
+#include <QAbstractButton>
+#include <QTimer>
+#include <QLabel>
+#include <QProgressBar>
 
 #include "controllers.hpp"
 #include "gui/item-controllers.hpp"

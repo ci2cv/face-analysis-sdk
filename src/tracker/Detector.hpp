@@ -20,7 +20,7 @@
 #ifndef DETECTOR_CLASS_HPP_
 #define DETECTOR_CLASS_HPP_
 
-#include <opencv2/core/core.hpp>
+#include <opencv2/opencv.hpp>
 #include <tracker/Patch.hpp>
 
 #define DETECTOR_BAD_RESPONSE -.001

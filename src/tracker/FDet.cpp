@@ -18,6 +18,7 @@
 // Copyright CSIRO 2013
 
 #include <tracker/FDet.hpp>
+#include <opencv2/opencv.hpp>
 using namespace FACETRACKER;
 using namespace std;
 #define TSCALE 0.3
