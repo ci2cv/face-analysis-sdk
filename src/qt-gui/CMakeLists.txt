@@ -4,10 +4,8 @@
 # INCLUDE( ${QT_USE_FILE} )
 
 # qt
-if(APPLE)
-    set(QTDIR /Users/lusheng/Qt/5.11.1/clang_64)
-    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${QTDIR})
-endif(APPLE)
+set(QTDIR "" CACHE PATH "Qt5 directory")
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${QTDIR})
 find_package(Qt5Widgets CONFIG REQUIRED)
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 
@@ -16,15 +14,10 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 # opencv
-if(WIN32)
-    set(opencv_DIR E:/toolkits/opencv-3.2.0-contrib-cpu)
-endif(WIN32)
-if(APPLE)
-    set(opencv_DIR ~/toolkits/opencv-3.4.1-mac/share/OpenCV)
-endif(APPLE)
-find_package(opencv REQUIRED)
+set(OpenCV_DIR "" CACHE PATH "OpenCV root directory")
+find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
-message("OpenCV_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
+# message("OpenCV_INCLUDE_DIRS = ${OpenCV_INCLUDE_DIRS}")
 
 #set(CMAKE_VERBOSE_MAKEFILE true)
 
